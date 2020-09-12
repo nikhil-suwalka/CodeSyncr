@@ -1,10 +1,20 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>CodeSyncr</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 <body>
-<label for=""></label><textarea name="code_area" id="" style="resize: none; width: 40%" rows="40"></textarea>
+<form>
+    {% csrf_token %}
+    <label for="code_area"></label>
+    <textarea name="code_area" id="code_area" style="resize: none; width: 40%" rows="40">{{ data }}</textarea>
+</form>
+
+<script src="{% static 'js/text_change_ajax.js' %}"></script>
+
 </body>
 </html>

@@ -14,7 +14,7 @@ class File(models.Model):
     file_current = models.TextField(blank=True, null=False, default="")
     file_backup = models.TextField(blank=True, null=False, default="")
     session_id = models.ForeignKey(Session, on_delete=models.CASCADE, related_name="session_link", null=False, blank=False)
-    last_changed = models.DateTimeField(auto_now=True, null=False, blank=False)
+    last_changed = models.DateTimeField(auto_now=True, null=False, blank=False,)
 
     def __str__(self):
         return str(self.id)
