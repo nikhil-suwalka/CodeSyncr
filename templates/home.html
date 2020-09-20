@@ -4,17 +4,41 @@
 <head>
     <meta charset="UTF-8">
     <title>CodeSyncr</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
 </head>
 <body>
-<form>
-    {% csrf_token %}
-    <label for="code_area"></label>
-    <textarea name="code_area" id="code_area" style="resize: none; width: 40%" rows="40">{{ data }}</textarea>
+<nav class="navbar">
+    <div class="logo"><span class="clogo">C</span><span class="endlogo">odeSyncr</span></div>
+
+    <ul class="navitems">
+        <li class="navitem"><a href="">About</a></li>
+        <li class="navitem"><a href="">Contact Us</a></li>
+        <li class="navitem"><a href="">Login</a></li>
+    </ul>
+</nav>
+<form>{% csrf_token %}
+    <section class="main_section">
+        <div class="container">
+
+            <div name="" id="codearea" cols="30" rows="10">{{ data }}</div>
+            <textarea name="" id="codeoutput" cols="30" rows="10" disabled></textarea>
+
+        </div>
+    </section>
 </form>
 
+<footer>
+    <div>
+        <p>Made with Django</p>
+    </div>
+</footer>
+<script src="{% static 'ace-src/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("codearea");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/python");
+</script>
 <script src="{% static 'js/text_change_ajax.js' %}"></script>
-
 </body>
 </html>

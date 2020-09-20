@@ -1,10 +1,12 @@
 let timer, timeoutVal = 1000; // time it takes to wait for user to stop typing in ms
 
 // const status = document.getElementById('status');
-const typer = document.getElementById('code_area');
+var typer = ace.edit("codearea");
+
+var aceDiv = document.getElementById("codearea");
 var stop_receiving = false;
-typer.addEventListener('keypress', handleKeyPress);
-typer.addEventListener('keyup', handleKeyUp);
+aceDiv.addEventListener('keypress', handleKeyPress);
+aceDiv.addEventListener('keyup', handleKeyUp);
 
 
 cookies = document.cookie.split(';').reduce((cookies, cookie) => {
@@ -31,13 +33,13 @@ function handleKeyUp(e) {
             type: "POST",
             url: "/update/",
             dataType: "json",
-            data: {"data": typer.value},
+            data: {"data": typer.getSession().getValue()},
             headers: {"X-CSRFToken": cookies["csrftoken"]},
 
             success:
                 function (data) {
 
-                    typer.value = data.content;
+                    typer.setValue(data.content);
                 }
         });
 
@@ -56,12 +58,12 @@ setInterval(function () {
             type: "POST",
             url: "/refresh/",
             dataType: "json",
-            data: {"data": typer.value},
+            data: {"data": typer.getSession().getValue()},
             headers: {"X-CSRFToken": cookies["csrftoken"]},
             success:
                 function (data) {
                     if (data.change === "true")
-                        typer.value = data.content;
+                        typer.setValue(data.content);
                 }
         });
     }

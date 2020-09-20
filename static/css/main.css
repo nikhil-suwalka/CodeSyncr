@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+body{
+    margin: 0;
+    background: #3b3355;
+}
+
+nav{
+    background: rgb(191, 205, 224);
+    background: linear-gradient(90deg, rgba(191,205,224,1) 36%, rgba(254,252,253,1) 100%);
+    margin-top: 1em;
+    border-radius: 3em;
+}
+
+.navbar{
+    display: flex;
+    justify-content: space-between;
+}
+
+.navbar > .navitems{
+    display: flex;
+
+}
+.clogo{
+    color: #3b3355;
+    font-family: Pacifico, sans-serif;
+    font-size: 1em;
+    font-weight: bold;
+    padding-left: 0.5em;
+    padding-bottom: 0;
+}
+.logo{
+    color: #3b3355;
+    font-family: Pacifico, sans-serif;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 0.10em;
+}
+
+.navitem{
+    display: flex;
+}
+
+.navitem a{
+    text-decoration: none;
+    color: #5d5d81;
+    font-weight: bold;
+    font-family: "Montserrat SemiBold",sans-serif;
+    margin: 0 1em 0;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    margin-right: 20%;
+}
+
+.main_section{
+    margin-top: 1em;
+    margin-left: 5%;
+}
+
+.main_section #codearea{
+    max-height: 700px;
+    background: #5d5d81;
+    color: white;
+    resize: none;
+    font-size: 1.2em;
+    border: none;
+}
+
+.main_section #codeoutput{
+    background: #453e56;
+    margin-top: 1em;
+    height: 10em;
+    resize: none;
+    border: none;
+    color: white;
+}
+
+footer{
+    height: 60px;
+    background: #565656;
+    background: linear-gradient(90deg, rgb(64, 64, 64) 36%, rgb(64, 64, 64) 100%);
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+    font-family: Montserrat,sans-serif;
+    color: #989898;
+}
+
+@media screen and (min-width: 500px) and (min-height: 600px){
+    nav{
+        margin: 1em 5% 0 5%;
+    }
+    footer{
+        width: 90%;
+        margin: 1em 5% 0 5%;
+        border-top-left-radius: 3em;
+        border-top-right-radius: 3em;
+    }
+    nav .navitem{
+        font-size: 0.75em;
+    }
+    .main_section #codearea{
+        background: #5d5d81;
+        color: white;
+        min-height: 70vw;
+    }
+    .main_section{
+        min-height: 80%;
+    }
+    .container{
+        margin-right: 5%;
+    }
+}
+
+@media screen and (min-width: 650px) and (min-height: 600px){
+    nav{
+        margin: 1em 10% 0 10%;
+    }
+    footer{
+        width: 80%;
+        margin: 1em 10% 0 10%;
+        border-top-left-radius: 3em;
+        border-top-right-radius: 3em;
+    }
+    nav .navitem{
+        font-size: 1em;
+    }
+    .main_section{
+        margin-top: 1em;
+        margin-left: 10%;
+    }
+    .main_section #codearea{
+        background: #5d5d81;
+        color: white;
+        min-height: 500px;
+    }
+    .container{
+        margin-right: 10%;
+    }
+    footer{
+        margin-top: 16%;
+    }
+}
+@media screen and (min-width: 1024px){
+    nav{
+        margin: 1em 20% 0 20%;
+    }
+    footer{
+        width: 60%;
+        margin: 1em 20% 0 20%;
+        border-top-left-radius: 3em;
+        border-top-right-radius: 3em;
+    }
+    .main_section{
+        margin-top: 1em;
+        margin-left: 20%;
+    }
+    .main_section #codearea{
+        height: 50em;
+        background: #5d5d81;
+        min-width: 60%;
+        color: white;
+    }
+    .main_section #codeoutput{
+        margin-top: 0;
+        margin-left: 1em;
+        width: 40%;
+        height: 52.5em;
+    }
+    .container{
+        margin-right: 25%;
+        flex-direction: row;
+    }
+}
+
+
