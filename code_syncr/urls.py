@@ -24,6 +24,6 @@ urlpatterns = [
     path('update/', sync_with_db, name="sync_with_db"),
     path('refresh/', get_from_db, name="get_from_db"),
     path('clearsession/', clear_session, name="clear_session"),
-    path('samesession/', same_session, name="same_session"),
+    path('samesession/<int:num>', same_session, name="same_session"),
 
 ]

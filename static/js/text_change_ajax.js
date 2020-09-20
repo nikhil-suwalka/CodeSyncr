@@ -38,8 +38,11 @@ function handleKeyUp(e) {
 
             success:
                 function (data) {
+                    cursor = editor.selection.getCursor();
+                    typer.setValue(data.content, 1);
+                    typer.moveCursorTo(cursor.row,cursor.column);
 
-                    typer.setValue(data.content);
+
                 }
         });
 
@@ -63,7 +66,7 @@ setInterval(function () {
             success:
                 function (data) {
                     if (data.change === "true")
-                        typer.setValue(data.content);
+                        typer.setValue(data.content, 1);
                 }
         });
     }
