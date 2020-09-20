@@ -60,10 +60,9 @@ setInterval(function () {
             headers: {"X-CSRFToken": cookies["csrftoken"]},
             success:
                 function (data) {
-
                     if (data.change === "true")
                         typer.value = data.content;
                 }
         });
     }
-}, 5000)
+}, 1000)

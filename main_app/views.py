@@ -139,5 +139,7 @@ def clear_session(request):
 def same_session(request):
     request.session["session_id"] = 27
     request.session["file_id"] = 27
+    ob = File.objects.filter(session_id=request.session["session_id"]).first()
 
+    request.session["last_changed"] = str(ob.last_changed)
     return redirect("/")
