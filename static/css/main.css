@@ -89,7 +89,7 @@ footer{
     color: #989898;
 }
 
-@media screen and (min-width: 500px) and (min-height: 600px){
+@media screen and (min-width: 500px){
     nav{
         margin: 1em 5% 0 5%;
     }
@@ -115,7 +115,7 @@ footer{
     }
 }
 
-@media screen and (min-width: 650px) and (min-height: 600px){
+@media screen and (min-width: 650px){
     nav{
         margin: 1em 10% 0 10%;
     }
