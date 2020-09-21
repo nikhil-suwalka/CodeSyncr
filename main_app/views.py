@@ -136,9 +136,9 @@ def clear_session(request):
     return redirect("/")
 
 
-def same_session(request):
-    request.session["session_id"] = 1
-    request.session["file_id"] = 1
+def same_session(request, num:int):
+    request.session["session_id"] = num
+    request.session["file_id"] = num
     ob = File.objects.filter(session_id=request.session["session_id"]).first()
 
     request.session["last_changed"] = str(ob.last_changed)
