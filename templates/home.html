@@ -22,8 +22,18 @@
         <div class="container">
 
             <div name="" id="codearea" cols="30" rows="10">{{ data }}</div>
-            <textarea name="" id="codeoutput" cols="30" rows="10" disabled></textarea>
-
+            <div id="codeoutputdiv">
+                <select name="language" id="language">
+                    <option value="C++">C++</option>
+                    <option value="python">python</option>
+                    <option value="Java">Java</option>
+                    <option value="C">C</option>
+                    <option value="php">PHP</option>
+                    <option value="JavaScript">JavaScript</option>
+                </select>
+                <button>Run</button>
+                <textarea name="" id="codeoutput" cols="30" rows="10" disabled></textarea>
+            </div>
         </div>
     </section>
 </form>
