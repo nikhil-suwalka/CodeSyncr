@@ -68,11 +68,18 @@ nav{
     font-size: 1.2em;
     border: none;
 }
+.main_section div #language{
+    background: #cdcdcd;
+}
+.main_section #codeoutputdiv{
 
-.main_section #codeoutput{
+}
+
+.main_section div textarea{
     background: #453e56;
-    margin-top: 1em;
-    height: 10em;
+    margin-top: 0.5em;
+    height: 80%;
+    width: 100%;
     resize: none;
     border: none;
     color: white;
@@ -89,7 +96,7 @@ footer{
     color: #989898;
 }
 
-@media screen and (min-width: 500px) and (min-height: 600px){
+@media screen and (min-width: 500px){
     nav{
         margin: 1em 5% 0 5%;
     }
@@ -115,7 +122,7 @@ footer{
     }
 }
 
-@media screen and (min-width: 650px) and (min-height: 600px){
+@media screen and (min-width: 650px){
     nav{
         margin: 1em 10% 0 10%;
     }
@@ -164,7 +171,7 @@ footer{
         min-width: 60%;
         color: white;
     }
-    .main_section #codeoutput{
+    .main_section #codeoutputdiv{
         margin-top: 0;
         margin-left: 1em;
         width: 40%;
