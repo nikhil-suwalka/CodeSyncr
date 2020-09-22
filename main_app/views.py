@@ -6,8 +6,6 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from .models import *
-
-
 # Create your views here.
 def home_view(request):
     if request.method == "POST":
