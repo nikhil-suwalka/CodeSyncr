@@ -25,5 +25,7 @@ urlpatterns = [
     path('refresh/', get_from_db, name="get_from_db"),
     path('clearsession/', clear_session, name="clear_session"),
     path('samesession/<int:num>', same_session, name="same_session"),
+    path('change_language/', change_language, name="change_language"),
+    path('execute_code/', execute_code_fun, name="execute_code_fun"),
 
 ]

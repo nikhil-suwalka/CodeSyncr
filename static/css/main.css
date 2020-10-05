@@ -71,11 +71,8 @@ nav{
 .main_section div #language{
     background: #cdcdcd;
 }
-.main_section #codeoutputdiv{
-
-}
-
-.main_section div textarea{
+#codeoutput{
+    white-space: pre-wrap;
     background: #453e56;
     margin-top: 0.5em;
     height: 80%;
@@ -84,6 +81,16 @@ nav{
     border: none;
     color: white;
 }
+
+/*.main_section div textarea{*/
+/*    background: #453e56;*/
+/*    margin-top: 0.5em;*/
+/*    height: 80%;*/
+/*    width: 100%;*/
+/*    resize: none;*/
+/*    border: none;*/
+/*    color: white;*/
+/*}*/
 
 footer{
     height: 60px;
@@ -182,5 +189,3 @@ footer{
         flex-direction: row;
     }
 }
-
-

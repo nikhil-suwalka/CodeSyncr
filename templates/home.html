@@ -23,31 +23,37 @@
 
             <div name="" id="codearea" cols="30" rows="10">{{ data }}</div>
             <div id="codeoutputdiv">
-                <select name="language" id="language">
-                    <option value="C++">C++</option>
+                <select name="language" id="language" onchange="language_changed()">
+                    <option value="c_cpp">C++</option>
                     <option value="python">python</option>
-                    <option value="Java">Java</option>
-                    <option value="C">C</option>
+                    <option value="java">Java</option>
                     <option value="php">PHP</option>
-                    <option value="JavaScript">JavaScript</option>
+                    <option value="javascript">JavaScript</option>
                 </select>
-                <button>Run</button>
-                <textarea name="" id="codeoutput" cols="30" rows="10" disabled></textarea>
+                <button type="button" onclick="execute_code()">Run</button>
+                <div id="codeoutput" style="overflow: auto;"></div>
             </div>
         </div>
     </section>
 </form>
 
-<footer>
+<!-- <footer>
     <div>
         <p>Made with Django</p>
     </div>
-</footer>
+</footer> -->
 <script src="{% static 'ace-src/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'js/code_handler.js' %}" type="text/javascript" charset="utf-8"></script>
 <script>
+
+    $("#language").val("{{ language }}");
+
     var editor = ace.edit("codearea");
     editor.setTheme("ace/theme/monokai");
-    editor.session.setMode("ace/mode/python");
+    editor.session.setMode("ace/mode/{{ language }}");
+
+
+
 </script>
 <script src="{% static 'js/text_change_ajax.js' %}"></script>
 </body>

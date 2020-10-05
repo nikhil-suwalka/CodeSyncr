@@ -6,16 +6,20 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from .models import *
+from .execute_code import *
+
+
 # Create your views here.
 def home_view(request):
     if request.method == "POST":
         pass
     else:
-        context = {"data": ""}
+        context = {"data": "", "language": "python"}
         if request.session.get("session_id", False):
             ob = File.objects.filter(session_id=request.session["session_id"]).first()
             request.session["last_changed"] = str(ob.last_changed)
             context["data"] = ob.file_current
+            context["language"] = ob.language
             print("Old session found: ", request.session['session_id'], " File ID: ", ob.id)
         else:
             s = Session.objects.create()
@@ -91,40 +95,43 @@ def get_from_db(request):
 
     print(local_last_change, server_last_change)
     if server_last_change != local_last_change:
-        print("Changed")
-
-        # Merge
-        local_content = request.POST.get("data")
+        # print("Changed")
+        #
+        # # Merge
+        # local_content = request.POST.get("data")
         server_content = ob.file_current
-        backup_content = ob.file_backup
+        # backup_content = ob.file_backup
+        #
+        # dmp = diff_match_patch()
+        # dmp.Diff_Timeout = 5
+        # # print("------------")
+        # # print(local_content, server_content)
+        # diff = dmp.diff_main(backup_content, server_content, True)
+        # print("DIFF: ", dmp.Diff_Timeout)
+        # if len(diff) > 2:
+        #     dmp.diff_cleanupSemantic(diff)
+        # patch_list = dmp.patch_make(backup_content, server_content, diff)
+        # patch_text = dmp.patch_toText(patch_list)
+        # patches = dmp.patch_fromText(patch_text)
+        # results = dmp.patch_apply(patches, local_content)
+        #
+        # request.session["last_changed"] = server_last_change
+        # print("xyz")
+        # print(request.session["last_changed"], server_last_change)
+        #
+        # print(results)
+        # if (len(results) > 0 and len(results[1]) > 0 and results[1][0]):
+        #     return HttpResponse(json.dumps({"change": "true", "content": results[0]}),
+        #                         content_type="application/json")
+        # else:
+        #     return HttpResponse(json.dumps({"change": "true", "content": server_content}),
+        #                         content_type="application/json")
 
-        dmp = diff_match_patch()
-        dmp.Diff_Timeout = 5
-        # print("------------")
-        # print(local_content, server_content)
-        diff = dmp.diff_main(backup_content, server_content, True)
-        print("DIFF: ", dmp.Diff_Timeout)
-        if len(diff) > 2:
-            dmp.diff_cleanupSemantic(diff)
-        patch_list = dmp.patch_make(backup_content, server_content, diff)
-        patch_text = dmp.patch_toText(patch_list)
-        patches = dmp.patch_fromText(patch_text)
-        results = dmp.patch_apply(patches, local_content)
-
-        request.session["last_changed"] = server_last_change
-        print("xyz")
-        print(request.session["last_changed"], server_last_change)
-
-        print(results)
-        if (len(results) > 0 and len(results[1]) > 0 and results[1][0]):
-            return HttpResponse(json.dumps({"change": "true", "content": results[0]}),
-                                content_type="application/json")
-        else:
-            return HttpResponse(json.dumps({"change": "true", "content": server_content}),
-                                content_type="application/json")
+        return HttpResponse(json.dumps({"change": "true", "content": server_content}),
+                            content_type="application/json")
 
     else:
-        print("Not Changed")
+        # print("Not Changed")
 
         return HttpResponse(json.dumps({"change": "false"}), content_type="application/json")
 
@@ -134,10 +141,35 @@ def clear_session(request):
     return redirect("/")
 
 
-def same_session(request, num:int):
+def same_session(request, num: int):
     request.session["session_id"] = num
     request.session["file_id"] = num
     ob = File.objects.filter(session_id=request.session["session_id"]).first()
 
     request.session["last_changed"] = str(ob.last_changed)
     return redirect("/")
+
+
+def change_language(request):
+    lang = request.POST.get("language")
+    File.objects.filter(id=request.session["file_id"]).update(language=lang)
+
+    return redirect("/")
+
+
+def execute_code_fun(request):
+    lang = request.POST.get("language")
+    source = request.POST.get("source")
+
+    output = ""
+    if lang == "python":
+        output = run_python(source)
+    elif lang == "c_cpp":
+        output = run_cpp(source)
+    elif lang == "java":
+        output = run_java(source)
+
+    output = output.replace('\\n', "<br>")
+    # output = "<br />".join(output.split("\n"))
+    # print("OUTPUT: ", output)
+    return HttpResponse(json.dumps({"output": output}), content_type="application/json")
