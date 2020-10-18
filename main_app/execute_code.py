@@ -90,20 +90,20 @@ def run_java(code, timeout=3):
         else:
             return output
 
-
-print(run_java("""
-class Cls2{
-
-    int x = 55;
-
-}
-
-class Cls1{
-
-int j= 5;
-}
-
-"""))
+#
+# print(run_java("""
+# class Cls2{
+#
+#     int x = 55;
+#
+# }
+#
+# class Cls1{
+#
+# int j= 5;
+# }
+#
+# """))
 
 # print(run_java("""
 # class Cls1{
