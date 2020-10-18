@@ -173,3 +173,7 @@ def execute_code_fun(request):
     # output = "<br />".join(output.split("\n"))
     # print("OUTPUT: ", output)
     return HttpResponse(json.dumps({"output": output}), content_type="application/json")
+
+
+def run_links(request):
+    return render(request,"login.html",{"links":["Nishit","b","c"]})

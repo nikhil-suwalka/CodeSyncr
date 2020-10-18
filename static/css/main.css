@@ -2,14 +2,16 @@
 
 body{
     margin: 0;
-    background: #3b3355;
+    background: black;
 }
 
 nav{
-    background: rgb(191, 205, 224);
-    background: linear-gradient(90deg, rgba(191,205,224,1) 36%, rgba(254,252,253,1) 100%);
-    margin-top: 1em;
-    border-radius: 3em;
+    /*background: rgb(191, 205, 224);
+    background: linear-gradient(90deg, rgba(191,205,224,1) 36%, rgba(254,252,253,1) 100%);*/
+    background: #1F1F1F;
+    /*margin-top: 1em;*/
+    /*border-radius: 3em;*/
+    min-width: 100%;
 }
 
 .navbar{
@@ -19,10 +21,10 @@ nav{
 
 .navbar > .navitems{
     display: flex;
-
+    text-transform: uppercase;
 }
 .clogo{
-    color: #3b3355;
+    color: white;
     font-family: Pacifico, sans-serif;
     font-size: 1em;
     font-weight: bold;
@@ -30,7 +32,7 @@ nav{
     padding-bottom: 0;
 }
 .logo{
-    color: #3b3355;
+    color: white;
     font-family: Pacifico, sans-serif;
     font-size: 1.5em;
     font-weight: bold;
@@ -43,7 +45,7 @@ nav{
 
 .navitem a{
     text-decoration: none;
-    color: #5d5d81;
+    color: white;
     font-weight: bold;
     font-family: "Montserrat SemiBold",sans-serif;
     margin: 0 1em 0;
@@ -62,7 +64,7 @@ nav{
 
 .main_section #codearea{
     max-height: 700px;
-    background: #5d5d81;
+    background: #1F1F1F;
     color: white;
     resize: none;
     font-size: 1.2em;
@@ -73,7 +75,7 @@ nav{
 }
 #codeoutput{
     white-space: pre-wrap;
-    background: #453e56;
+    background: #1F1F1F;
     margin-top: 0.5em;
     height: 80%;
     width: 100%;
@@ -105,7 +107,7 @@ footer{
 
 @media screen and (min-width: 500px){
     nav{
-        margin: 1em 5% 0 5%;
+        margin: 0 5% 0 0;
     }
     footer{
         width: 90%;
@@ -117,7 +119,7 @@ footer{
         font-size: 0.75em;
     }
     .main_section #codearea{
-        background: #5d5d81;
+        background: #1F1F1F;
         color: white;
         min-height: 70vw;
     }
@@ -127,15 +129,22 @@ footer{
     .container{
         margin-right: 5%;
     }
+    .main_section #codeoutputdiv{
+        margin-top: 1em;
+    }
+    .main_section #codeoutput{
+        min-height: 30vh;
+        color: #1F1F1F;
+    }
 }
 
 @media screen and (min-width: 650px){
     nav{
-        margin: 1em 10% 0 10%;
+        margin: 0 10% 0 0;
     }
     footer{
         width: 80%;
-        margin: 1em 10% 0 10%;
+        margin: 0 10% 0 0;
         border-top-left-radius: 3em;
         border-top-right-radius: 3em;
     }
@@ -147,9 +156,15 @@ footer{
         margin-left: 10%;
     }
     .main_section #codearea{
-        background: #5d5d81;
-        color: white;
-        min-height: 500px;
+        background: #1F1F1F;
+        min-height: 50vh;
+    }
+    .main_section #codeoutput{
+        min-height: 30vh;
+        color: #1F1F1F;
+    }
+    .main_section #codeoutputdiv{
+        margin-top: 1em;
     }
     .container{
         margin-right: 10%;
@@ -160,32 +175,152 @@ footer{
 }
 @media screen and (min-width: 1024px){
     nav{
-        margin: 1em 20% 0 20%;
+        margin: 0 20% 0 0;
     }
     footer{
         width: 60%;
-        margin: 1em 20% 0 20%;
-        border-top-left-radius: 3em;
-        border-top-right-radius: 3em;
     }
     .main_section{
         margin-top: 1em;
         margin-left: 20%;
     }
     .main_section #codearea{
-        height: 50em;
-        background: #5d5d81;
+        background: #1F1F1F;
         min-width: 60%;
         color: white;
+        min-height: 80vh;
     }
     .main_section #codeoutputdiv{
         margin-top: 0;
         margin-left: 1em;
         width: 40%;
-        height: 52.5em;
+        min-height: 70vh;
     }
     .container{
         margin-right: 25%;
         flex-direction: row;
+        min-height: 100%;
     }
+}
+
+
+/** Custom Select **/
+.custom-select-wrapper {
+    position: relative;
+    display: inline-block;
+    user-select: none;
+}
+.custom-select-wrapper select {
+    display: none;
+}
+.custom-select {
+    position: relative;
+    display: inline-block;
+}
+.custom-select-trigger {
+    position: relative;
+    display: block;
+    width: 60px;
+    padding: 0 84px 0 22px;
+    font-size: 15px;
+    font-weight: 300;
+    color: #000000;
+    line-height: 40px;
+    background: #d2d2d2;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.custom-select-trigger:after {
+    position: absolute;
+    display: block;
+    content: '';
+    width: 10px; height: 10px;
+    top: 50%; right: 25px;
+    margin-top: -3px;
+    border-bottom: 1px solid #000000;
+    border-right: 1px solid #000000;
+    transform: rotate(45deg) translateY(-50%);
+    transition: all .4s ease-in-out;
+    transform-origin: 50% 0;
+}
+.custom-select.opened .custom-select-trigger:after {
+    margin-top: 3px;
+    transform: rotate(-135deg) translateY(-50%);
+}
+.custom-options {
+    position: absolute;
+    display: block;
+    top: 100%; left: 0; right: 0;
+    min-width: 100%;
+    margin: 15px 0;
+    border: 1px solid #b5b5b5;
+    border-radius: 4px;
+    box-sizing: border-box;
+    box-shadow: 0 2px 1px rgba(0,0,0,.07);
+    background: #fff;
+    transition: all .4s ease-in-out;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-15px);
+}
+.custom-select.opened .custom-options {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+    transform: translateY(0);
+}
+.custom-options:before {
+    position: absolute;
+    display: block;
+    content: '';
+    bottom: 100%; right: 25px;
+    width: 7px; height: 7px;
+    margin-bottom: -4px;
+    border-top: 1px solid #b5b5b5;
+    border-left: 1px solid #b5b5b5;
+    background: #fff;
+    transform: rotate(45deg);
+    transition: all .4s ease-in-out;
+}
+.option-hover:before {
+    background: #f9f9f9;
+}
+.custom-option {
+    position: relative;
+    display: block;
+    padding: 0 22px;
+    border-bottom: 1px solid #b5b5b5;
+    font-size: 18px;
+    font-weight: 600;
+    color: #b5b5b5;
+    line-height: 47px;
+    cursor: pointer;
+    transition: all .4s ease-in-out;
+}
+.custom-option:first-of-type {
+    border-radius: 4px 4px 0 0;
+}
+.custom-option:last-of-type {
+    border-bottom: 0;
+    border-radius: 0 0 4px 4px;
+}
+.custom-option:hover,
+.custom-option.selection {
+    background: #f9f9f9;
+}
+
+button{
+    min-width: fit-content;
+    padding: 0 10px 0 10px;
+    font-size: 13px;
+    font-weight: 300;
+    color: #000000;
+    line-height: 40px;
+    background: #d2d2d2;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    text-align: center;
 }

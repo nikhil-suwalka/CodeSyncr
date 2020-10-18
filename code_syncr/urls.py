@@ -18,6 +18,7 @@ from django.urls import path
 
 from main_app.views import *
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_view, name="home_view"),
@@ -27,5 +28,5 @@ urlpatterns = [
     path('samesession/<int:num>', same_session, name="same_session"),
     path('change_language/', change_language, name="change_language"),
     path('execute_code/', execute_code_fun, name="execute_code_fun"),
-
+    path('test/',run_links,name="run_link")
 ]
