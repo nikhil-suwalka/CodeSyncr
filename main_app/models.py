@@ -6,7 +6,7 @@ from django.db import models
 class User(models.Model):
     name = models.CharField(blank=False, null=False, max_length=255)
     email = models.EmailField(blank=False, null=False, max_length=255)
-    password = models.CharField(blank=False, null=False, max_length=255)
+    password = models.CharField(blank=False, null=False, max_length=1000)
 
     def __str__(self):
         return str(self.name)
@@ -15,7 +15,7 @@ class User(models.Model):
 class Session(models.Model):
     id = models.CharField(max_length=250, blank=False, null=False, unique=True, primary_key=True)
     creation_date = models.DateTimeField(null=False, auto_now=True, blank=False)
-    users = models.ManyToManyField(User)
+    users = models.ManyToManyField(User, related_name="contributors")
 
     def __str__(self):
         return str(self.id)

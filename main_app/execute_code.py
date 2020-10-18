@@ -44,7 +44,7 @@ def run_command_with_timeout(cmd, timeout_sec, lang):
         timer.cancel()
         if os.path.isfile("test"):
             os.remove("test")
-        os.system("rm *.class -f")
+        os.system("wsl x`rm *.class -f")
         return (0, (out, err))
 
     return (1, "Process killed: program cannot run for more than 3 secs.")

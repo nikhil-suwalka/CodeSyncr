@@ -8,39 +8,64 @@ from django.shortcuts import render, redirect
 
 from .models import *
 from .execute_code import *
+import hashlib
 
 
-# Create your views here.
+def main(request):
+    if request.session.get("email", False):
+        userob = User.objects.filter(email=request.session.get("email")).first()
+        ob = Session.objects.filter(users=userob)
+        links = [i.id for i in ob]
+        return render(request, "home.html", {"links": links})
+    else:
+        return redirect("/login")
+
+
+def login(request):
+    if request.session.get("email", False):
+        return redirect("/")
+
+    if request.method == "POST":
+
+        email = request.POST.get("email")
+        pwd = hashlib.sha256(request.POST.get("pwd").encode()).hexdigest()
+        if request.POST.get("login"):
+            ob = User.objects.filter(email=email, password=pwd).first()
+            if ob:
+                request.session['email'] = email
+                request.session['name'] = ob.name
+            else:
+                print("WRONG PASSWORD")
+                return render(request, "login.html", context={"error": "Invalid credentials"})
+
+        else:
+            name = request.POST.get("name")
+            User.objects.create(name=name, password=pwd, email=email)
+            request.session['email'] = email
+            request.session['name'] = name
+
+        return redirect("/")
+    else:
+        return render(request, "login.html", context={"error": ""})
+
+
 def create_link(request):
     if request.method == "POST":
-        pass
+        print("create_link called by POST")
     else:
-        # Session already exists
-        request.session
-        if request.session.get("session_id", False):
-            ob = File.objects.filter(session_id=request.session["session_id"]).first()
-            sessionid = request.session.get("session_id")
-            request.session["last_changed"] = str(ob.last_changed)
-            print("Old session found: ", request.session['session_id'], " File ID: ", ob.id)
-
-        # Session doesn't exist
-        else:
-            sid = getUniqueCode()
-            s = Session.objects.create(id=sid)
-            f = File.objects.create(session_id=s)
-            request.session[sid] = {'file_id': f.id, 'last_changed': str(f.last_changed)}
-            # request.session["session_id"] = sid
-            # request.session["file_id"] = f.id
-            # request.session["last_changed"] = str(f.last_changed)
-            print("New session created: ", sid)
-            sessionid = sid
-        return redirect("/" + str(sessionid))
-        # return render(request, "home.html", context)
+        sid = getUniqueCode()
+        s = Session.objects.create(id=sid)
+        f = File.objects.create(session_id=s)
+        request.session[sid] = {'file_id': f.id, 'last_changed': str(f.last_changed)}
+        s.users.add(User.objects.filter(email=request.session.get('email')).first())
+        print("New session created: ", sid)
+        return redirect("/" + str(sid))
+        # return render(request, "workarea.html", context)
 
 
 def home_view(request, session_id):
     if request.method == "POST":
-        pass
+        print("home_view called by POST")
     else:
         context = {}
         session = Session.objects.filter(id=session_id)
@@ -51,7 +76,7 @@ def home_view(request, session_id):
 
         context["data"] = fileob.file_current
         context["language"] = fileob.language
-        return render(request, "home.html", context)
+        return render(request, "workarea.html", context)
 
 
 # Send changes to server
@@ -94,14 +119,16 @@ def sync_with_db(request, session_link):
     time = datetime.now()
     if (results[1][0]):
         # time = datetime.now(pytz.timezone("Asia/Kolkata"))
-        File.objects.filter(id=request.session[session_link]['file_id']).update(file_backup=server_content, file_current=results[0],
-                                                                  last_changed=time)
+        File.objects.filter(id=request.session[session_link]['file_id']).update(file_backup=server_content,
+                                                                                file_current=results[0],
+                                                                                last_changed=time)
         request.session[session_link]["last_changed"] = str(time)
         return HttpResponse(json.dumps({"content": results[0]}), content_type="application/json")
 
     else:
         File.objects.filter(id=request.session[session_link]['file_id']).update(file_backup=server_content,
-                                                                  file_current=local_content, last_changed=time)
+                                                                                file_current=local_content,
+                                                                                last_changed=time)
         request.session[session_link]["last_changed"] = str(time)
 
         return HttpResponse(json.dumps({"content": local_content}), content_type="application/json")

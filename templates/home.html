@@ -5,93 +5,47 @@
     <meta charset="UTF-8">
     <title>CodeSyncr</title>
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/linkTable.css' %}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
 </head>
 <body>
 <nav class="navbar">
-    <div class="logo"><span class="clogo">C</span><span class="endlogo">odeSyncr</span></div>
+    <a href="/" style="text-decoration: none"><div class="logo"><span class="clogo">C</span><span class="endlogo">odeSyncr</span></div></a>
 
     <ul class="navitems">
         <li class="navitem"><a href="">About</a></li>
         <li class="navitem"><a href="">Contact Us</a></li>
-        <li class="navitem"><a href="">Login</a></li>
+        <li class="navitem"><a href="/clearsession">Logout</a></li>
     </ul>
 </nav>
-<form>{% csrf_token %}
+<div>
     <section class="main_section">
-        <div class="container">
-            <div name="" id="codearea" cols="30" rows="10">{{ data }}</div>
-            <div id="codeoutputdiv">
-                <select name="language" id="language" onchange="language_changed()" class="custom-select sources"
-                        placeholder="LANGUAGE">
-                    <option value="c_cpp">C++</option>
-                    <option value="python">python</option>
-                    <option value="java">Java</option>
-                    <option value="php">PHP</option>
-                    <option value="javascript">JavaScript</option>
-                </select>
-                <button type="button" onclick="execute_code()">
-                    RUN
-                </button>
-                <div id="codeoutput" style="overflow: auto;"></div>
+        <div>
+            <div class="table-title">
+                <h3>All Projects</h3>
+                <form action="/createlink" method="get">
+                    {% csrf_token %}
+                    <button type="submit">Create New Project</button>
+                </form>
             </div>
+            <table class="table-fill">
+                <thead>
+                <tr>
+                    <th class="text-left">Links</th>
+                </tr>
+                </thead>
+                <tbody class="table-hover">
+
+                {% for link in links %}
+                    <tr>
+                        <td class="text-left" onclick="window.location='/{{ link }}'">{{ link }}</td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
         </div>
     </section>
-</form>
-
-<!-- <footer>
-    <div>
-        <p>Made with Django</p>
-    </div>
-</footer> -->
-<script src="{% static 'ace-src/ace.js' %}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'js/code_handler.js' %}" type="text/javascript" charset="utf-8"></script>
-<script>
-
-    $("#language").val("{{ language }}");
-
-    var editor = ace.edit("codearea");
-    editor.setTheme("ace/theme/monokai");
-    editor.session.setMode("ace/mode/{{ language }}");
-
-
-    $(".custom-select").each(function () {
-        var classes = $(this).attr("class"),
-            id = $(this).attr("id"),
-            name = $(this).attr("name");
-        var template = '<div class="' + classes + '">';
-        template += '<span class="custom-select-trigger">' + $(this).attr("placeholder") + '</span>';
-        template += '<div class="custom-options">';
-        $(this).find("option").each(function () {
-            template += '<span class="custom-option ' + $(this).attr("class") + '" data-value="' + $(this).attr("value") + '">' + $(this).html() + '</span>';
-        });
-        template += '</div></div>';
-
-        $(this).wrap('<div class="custom-select-wrapper"></div>');
-        $(this).hide();
-        $(this).after(template);
-    });
-    $(".custom-option:first-of-type").hover(function () {
-        $(this).parents(".custom-options").addClass("option-hover");
-    }, function () {
-        $(this).parents(".custom-options").removeClass("option-hover");
-    });
-    $(".custom-select-trigger").on("click", function () {
-        $('html').one('click', function () {
-            $(".custom-select").removeClass("opened");
-        });
-        $(this).parents(".custom-select").toggleClass("opened");
-        event.stopPropagation();
-    });
-    $(".custom-option").on("click", function () {
-        $(this).parents(".custom-select-wrapper").find("select").val($(this).data("value"));
-        $(this).parents(".custom-options").find(".custom-option").removeClass("selection");
-        $(this).addClass("selection");
-        $(this).parents(".custom-select").removeClass("opened");
-        $(this).parents(".custom-select").find(".custom-select-trigger").text($(this).text());
-    });
-</script>
-<script src="{% static 'js/text_change_ajax.js' %}"></script>
+</div>
 </body>
 </html>
