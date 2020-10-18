@@ -15,17 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
 from main_app.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home_view, name="home_view"),
-    path('update/', sync_with_db, name="sync_with_db"),
-    path('refresh/', get_from_db, name="get_from_db"),
+    path('', create_link, name="create_link"),
+    path('update/<str:session_link>/', sync_with_db, name="sync_with_db"),
+    path('refresh/<str:session_link>/', get_from_db, name="get_from_db"),
     path('clearsession/', clear_session, name="clear_session"),
     path('samesession/<int:num>', same_session, name="same_session"),
-    path('change_language/', change_language, name="change_language"),
+    path('change_language/<str:session_link>/', change_language, name="change_language"),
     path('execute_code/', execute_code_fun, name="execute_code_fun"),
+    path('<str:session_id>/', home_view, name = "home_view")
 
 ]

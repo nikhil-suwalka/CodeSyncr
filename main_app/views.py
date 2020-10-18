@@ -1,8 +1,9 @@
 import json
+import random
 from datetime import datetime
 
 from diff_match_patch import diff_match_patch
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect
 
 from .models import *
@@ -10,33 +11,56 @@ from .execute_code import *
 
 
 # Create your views here.
-def home_view(request):
+def create_link(request):
     if request.method == "POST":
         pass
     else:
-        context = {"data": "", "language": "python"}
+        # Session already exists
+        request.session
         if request.session.get("session_id", False):
             ob = File.objects.filter(session_id=request.session["session_id"]).first()
+            sessionid = request.session.get("session_id")
             request.session["last_changed"] = str(ob.last_changed)
-            context["data"] = ob.file_current
-            context["language"] = ob.language
             print("Old session found: ", request.session['session_id'], " File ID: ", ob.id)
-        else:
-            s = Session.objects.create()
-            f = File.objects.create(session_id=s)
-            request.session["session_id"] = s.id
-            request.session["file_id"] = f.id
-            request.session["last_changed"] = str(f.last_changed)
-            print("New session created: ", s.id)
 
+        # Session doesn't exist
+        else:
+            sid = getUniqueCode()
+            s = Session.objects.create(id=sid)
+            f = File.objects.create(session_id=s)
+            request.session[sid] = {'file_id': f.id, 'last_changed': str(f.last_changed)}
+            # request.session["session_id"] = sid
+            # request.session["file_id"] = f.id
+            # request.session["last_changed"] = str(f.last_changed)
+            print("New session created: ", sid)
+            sessionid = sid
+        return redirect("/" + str(sessionid))
+        # return render(request, "home.html", context)
+
+
+def home_view(request, session_id):
+    if request.method == "POST":
+        pass
+    else:
+        context = {}
+        session = Session.objects.filter(id=session_id)
+        if (session.count() == 0):
+            raise Http404
+        fileob = File.objects.filter(session_id=session_id).first()
+        request.session[session_id] = {'file_id': fileob.id, 'last_changed': str(fileob.last_changed)}
+
+        context["data"] = fileob.file_current
+        context["language"] = fileob.language
         return render(request, "home.html", context)
 
 
 # Send changes to server
-def sync_with_db(request):
+def sync_with_db(request, session_link):
+    # session_link = request.get_full_path().split("/")[1]
+
     local_content = request.POST.get("data")
     # print(local_content)
-    ob = File.objects.filter(id=request.session["file_id"]).first()
+    ob = File.objects.filter(id=request.session[session_link]['file_id']).first()
     server_content = ob.file_current
     backup_content = ob.file_backup
 
@@ -69,28 +93,25 @@ def sync_with_db(request):
     print(results)
     time = datetime.now()
     if (results[1][0]):
-        print("in 1")
         # time = datetime.now(pytz.timezone("Asia/Kolkata"))
-        print("TIME: ", time)
-        File.objects.filter(id=request.session['file_id']).update(file_backup=server_content, file_current=results[0],
+        File.objects.filter(id=request.session[session_link]['file_id']).update(file_backup=server_content, file_current=results[0],
                                                                   last_changed=time)
-        request.session["last_changed"] = str(time)
+        request.session[session_link]["last_changed"] = str(time)
         return HttpResponse(json.dumps({"content": results[0]}), content_type="application/json")
 
     else:
-        print("in 2")
-        File.objects.filter(id=request.session['file_id']).update(file_backup=server_content,
+        File.objects.filter(id=request.session[session_link]['file_id']).update(file_backup=server_content,
                                                                   file_current=local_content, last_changed=time)
-        request.session["last_changed"] = str(time)
+        request.session[session_link]["last_changed"] = str(time)
 
         return HttpResponse(json.dumps({"content": local_content}), content_type="application/json")
 
 
 # Refresh from server
-def get_from_db(request):
-    local_last_change = request.session["last_changed"].replace('"', "")
-    ob = File.objects.filter(session_id=request.session["session_id"]).first()
-    print("OB", request.session["session_id"])
+def get_from_db(request, session_link):
+    # session_link = request.get_full_path().split("/")[1]
+    local_last_change = request.session[session_link]["last_changed"].replace('"', "")
+    ob = File.objects.filter(id=request.session[session_link]['file_id']).first()
     server_last_change = str(ob.last_changed)
 
     print(local_last_change, server_last_change)
@@ -150,9 +171,11 @@ def same_session(request, num: int):
     return redirect("/")
 
 
-def change_language(request):
+def change_language(request, session_link):
+    # session_link = request.get_full_path().split("/")[1]
+
     lang = request.POST.get("language")
-    File.objects.filter(id=request.session["file_id"]).update(language=lang)
+    File.objects.filter(id=request.session[session_link]["file_id"]).update(language=lang)
 
     return redirect("/")
 
@@ -173,3 +196,15 @@ def execute_code_fun(request):
     # output = "<br />".join(output.split("\n"))
     # print("OUTPUT: ", output)
     return HttpResponse(json.dumps({"output": output}), content_type="application/json")
+
+
+def getUniqueCode():
+    s = ""
+    for i in range(12):
+        s = s + chr(random.randint(97, 122))
+
+    s = s[:4] + "-" + s[4:8] + "-" + s[8:]
+
+    if Session.objects.filter(id=s).count() > 0:
+        return getUniqueCode()
+    return s

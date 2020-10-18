@@ -8,7 +8,8 @@ var stop_receiving = false;
 aceDiv.addEventListener('keypress', handleKeyPress);
 aceDiv.addEventListener('keyup', handleKeyUp);
 
-
+link = window.location.href.split("/");
+session_link = link[link.length - 2]
 cookies = document.cookie.split(';').reduce((cookies, cookie) => {
     const [name, value] = cookie.split('=').map(c => c.trim());
     cookies[name] = value;
@@ -31,7 +32,7 @@ function handleKeyUp(e) {
         console.log(cookies)
         $.ajax({
             type: "POST",
-            url: "/update/",
+            url: "/update/" + session_link + "/",
             dataType: "json",
             data: {"data": typer.getSession().getValue()},
             headers: {"X-CSRFToken": cookies["csrftoken"]},
@@ -40,7 +41,7 @@ function handleKeyUp(e) {
                 function (data) {
                     cursor = editor.selection.getCursor();
                     typer.setValue(data.content, 1);
-                    typer.moveCursorTo(cursor.row,cursor.column);
+                    typer.moveCursorTo(cursor.row, cursor.column);
 
 
                 }
@@ -59,7 +60,7 @@ setInterval(function () {
         // console.log("timeout2")
         $.ajax({
             type: "POST",
-            url: "/refresh/",
+            url: "/refresh/" + session_link + "/",
             dataType: "json",
             data: {"data": typer.getSession().getValue()},
             headers: {"X-CSRFToken": cookies["csrftoken"]},
