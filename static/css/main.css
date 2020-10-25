@@ -75,7 +75,7 @@ nav{
 }
 #codeoutput{
     white-space: pre-wrap;
-    background: #1F1F1F;
+    background: #1f1f1f;
     margin-top: 0.5em;
     height: 80%;
     width: 100%;
@@ -188,6 +188,8 @@ footer{
     }
     .main_section #codeoutputdiv{
         margin-top: 1em;
+        color:white;
+
     }
     .container{
         margin-right: 10%;
@@ -245,6 +247,8 @@ footer{
 
     .main_section #codeoutputdiv #codeoutput{
         min-height: 75vh;
+        color:white;
+
     }
     .container{
         margin-right: 25%;
@@ -281,7 +285,7 @@ footer{
 .custom-select-wrapper {
     position: relative;
     display: inline-block;
-    user-select: none;
+    /*user-select: none;*/
 }
 .custom-select-wrapper select {
     display: none;

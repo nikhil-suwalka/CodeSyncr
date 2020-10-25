@@ -10,7 +10,9 @@
 </head>
 <body>
 <nav class="navbar">
-    <a href="/" style="text-decoration: none"><div class="logo"><span class="clogo">C</span><span class="endlogo">odeSyncr</span></div></a>
+    <a href="/" style="text-decoration: none">
+        <div class="logo"><span class="clogo">C</span><span class="endlogo">odeSyncr</span></div>
+    </a>
 
     <ul class="navitems">
         <li class="navitem"><a href="">About</a></li>
@@ -23,8 +25,7 @@
         <div class="container">
             <div name="" id="codearea" cols="30" rows="10">{{ data }}</div>
             <div id="codeoutputdiv">
-                <select name="language" id="language" onchange="language_changed()" class="custom-select sources"
-                        placeholder="LANGUAGE">
+                <select name="language" id="language" onchange="language_changed()">
                     <option value="c_cpp">C++</option>
                     <option value="python">python</option>
                     <option value="java">Java</option>
@@ -46,14 +47,14 @@
                         </div>
                     </li>
                     <li class='friend selected'>
-                        <img src='{% static 'images/user.png' %}' />
+                        <img src='{% static 'images/user.png' %}'/>
                         <div class='name'>
                             {{ current_user }}
                         </div>
                     </li>
                     {% for collab in collabs %}
                         <li class='friend'>
-                            <img src='{% static 'images/user.png' %}' />
+                            <img src='{% static 'images/user.png' %}'/>
                             <div class='name'>
                                 {{ collab }}
                             </div>
@@ -74,48 +75,12 @@
 <script src="{% static 'js/code_handler.js' %}" type="text/javascript" charset="utf-8"></script>
 <script>
 
-    $("#language").val("{{ language }}");
 
     var editor = ace.edit("codearea");
     editor.setTheme("ace/theme/monokai");
     editor.session.setMode("ace/mode/{{ language }}");
 
-
-    $(".custom-select").each(function () {
-        var classes = $(this).attr("class"),
-            id = $(this).attr("id"),
-            name = $(this).attr("name");
-        var template = '<div class="' + classes + '">';
-        template += '<span class="custom-select-trigger">' + $(this).attr("placeholder") + '</span>';
-        template += '<div class="custom-options">';
-        $(this).find("option").each(function () {
-            template += '<span class="custom-option ' + $(this).attr("class") + '" data-value="' + $(this).attr("value") + '">' + $(this).html() + '</span>';
-        });
-        template += '</div></div>';
-
-        $(this).wrap('<div class="custom-select-wrapper"></div>');
-        $(this).hide();
-        $(this).after(template);
-    });
-    $(".custom-option:first-of-type").hover(function () {
-        $(this).parents(".custom-options").addClass("option-hover");
-    }, function () {
-        $(this).parents(".custom-options").removeClass("option-hover");
-    });
-    $(".custom-select-trigger").on("click", function () {
-        $('html').one('click', function () {
-            $(".custom-select").removeClass("opened");
-        });
-        $(this).parents(".custom-select").toggleClass("opened");
-        event.stopPropagation();
-    });
-    $(".custom-option").on("click", function () {
-        $(this).parents(".custom-select-wrapper").find("select").val($(this).data("value"));
-        $(this).parents(".custom-options").find(".custom-option").removeClass("selection");
-        $(this).addClass("selection");
-        $(this).parents(".custom-select").removeClass("opened");
-        $(this).parents(".custom-select").find(".custom-select-trigger").text($(this).text());
-    });
+    $("#language").val("{{ language }}");
 </script>
 <script src="{% static 'js/text_change_ajax.js' %}"></script>
 </body>

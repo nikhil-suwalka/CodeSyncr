@@ -1,3 +1,6 @@
+
+link = window.location.href.split("/");
+session_link = link[link.length - 2]
 function language_changed() {
 
     var lang = $("#language").val();
@@ -6,7 +9,7 @@ function language_changed() {
 
     $.ajax({
         type: "POST",
-        url: "/change_language/",
+        url: "/change_language/" + session_link + "/",
         dataType: "json",
         data: {"language": lang},
         headers: {"X-CSRFToken": cookies["csrftoken"]},

@@ -223,11 +223,10 @@ def same_session(request, num: int):
 
 def change_language(request, session_link):
     # session_link = request.get_full_path().split("/")[1]
-
     lang = request.POST.get("language")
     File.objects.filter(id=request.session[session_link]["file_id"]).update(language=lang)
 
-    return redirect("/")
+    return HttpResponse()
 
 
 def execute_code_fun(request):
