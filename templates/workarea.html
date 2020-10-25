@@ -35,6 +35,31 @@
                     RUN
                 </button>
                 <div id="codeoutput" style="overflow: auto;"></div>
+
+            </div>
+            <div id="collab_list">
+
+                <ul id='friend-list'>
+                    <li>
+                        <div class="collab_heading">
+                            Collaborators
+                        </div>
+                    </li>
+                    <li class='friend selected'>
+                        <img src='{% static 'images/user.png' %}' />
+                        <div class='name'>
+                            {{ current_user }}
+                        </div>
+                    </li>
+                    {% for collab in collabs %}
+                        <li class='friend'>
+                            <img src='{% static 'images/user.png' %}' />
+                            <div class='name'>
+                                {{ collab }}
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </section>
