@@ -40,6 +40,8 @@ def login(request):
 
         else:
             name = request.POST.get("name")
+            if User.objects.filter(email=email).count() > 0:
+                return render(request, "login.html", context={"error": "Email already exists"})
             User.objects.create(name=name, password=pwd, email=email)
             request.session['email'] = email
             request.session['name'] = name
@@ -67,16 +69,25 @@ def home_view(request, session_id):
     if request.method == "POST":
         print("home_view called by POST")
     else:
-        context = {}
-        session = Session.objects.filter(id=session_id)
-        if (session.count() == 0):
-            raise Http404
-        fileob = File.objects.filter(session_id=session_id).first()
-        request.session[session_id] = {'file_id': fileob.id, 'last_changed': str(fileob.last_changed)}
+        if request.session.get("email", False):
+            context = {}
+            session = Session.objects.filter(id=session_id)
 
-        context["data"] = fileob.file_current
-        context["language"] = fileob.language
-        return render(request, "workarea.html", context)
+            if (session.count() == 0):
+                raise Http404
+            user_ob = User.objects.filter(email=request.session.get("email")).first()
+            session_ob = session.first()
+            if user_ob not in session_ob.users.all():
+                session_ob.users.add(user_ob)
+
+            fileob = File.objects.filter(session_id=session_id).first()
+            request.session[session_id] = {'file_id': fileob.id, 'last_changed': str(fileob.last_changed)}
+
+            context["data"] = fileob.file_current
+            context["language"] = fileob.language
+            return render(request, "workarea.html", context)
+        else:
+            return redirect("/")
 
 
 # Send changes to server
@@ -141,7 +152,7 @@ def get_from_db(request, session_link):
     ob = File.objects.filter(id=request.session[session_link]['file_id']).first()
     server_last_change = str(ob.last_changed)
 
-    print(local_last_change, server_last_change)
+    # print(local_last_change, server_last_change)
     if server_last_change != local_last_change:
         # print("Changed")
         #
