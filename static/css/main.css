@@ -136,6 +136,29 @@ footer{
         min-height: 30vh;
         color: #1F1F1F;
     }
+    #collab_list{
+        min-width: 100vh;
+    }
+    #friend-list {
+        display: block;
+        margin-left: 1em;
+        padding: 0;
+        min-width: 100%;
+        height: 100%;
+        background:none;
+        list-style-type: none;
+    }
+
+    .friend {
+        min-width: 100%;
+        height: 60px;
+        background: grey;
+        border-bottom: 1px solid #DDD;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        color: white;
+    }
 }
 
 @media screen and (min-width: 650px){
@@ -172,6 +195,29 @@ footer{
     footer{
         margin-top: 16%;
     }
+    #collab_list{
+        min-width: 100%;
+    }
+    #friend-list {
+        display: block;
+        margin-left: 1em;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background:none;
+        list-style-type: none;
+    }
+
+    .friend {
+        width: 100%;
+        height: 60px;
+        background: grey;
+        border-bottom: 1px solid #DDD;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        color: white;
+    }
 }
 @media screen and (min-width: 1024px){
     nav{
@@ -193,13 +239,40 @@ footer{
     .main_section #codeoutputdiv{
         margin-top: 0;
         margin-left: 1em;
-        width: 40%;
-        min-height: 70vh;
+        min-width: 40%;
+        min-height: 80vh;
+    }
+
+    .main_section #codeoutputdiv #codeoutput{
+        min-height: 75vh;
     }
     .container{
         margin-right: 25%;
         flex-direction: row;
         min-height: 100%;
+    }
+    #collab_list{
+        min-width: 15vw;
+    }
+    #friend-list {
+        display: block;
+        margin-left: 1em;
+        padding: 0;
+        width: 15vw;
+        height: 100%;
+        background:none;
+        list-style-type: none;
+    }
+
+    .friend {
+        width: 15vw;
+        height: 60px;
+        background: grey;
+        border-bottom: 1px solid #DDD;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        color: white;
     }
 }
 
@@ -323,4 +396,61 @@ button{
     cursor: pointer;
     white-space: nowrap;
     text-align: center;
+}
+/* Collab list css */
+.collab_heading{
+    color: white;
+    text-transform: uppercase;
+    margin-bottom: 1em;
+}
+
+#collab_list{
+    min-width: 15vw;
+}
+#friend-list {
+    display: block;
+    margin-left: 1em;
+    padding: 0;
+    width: 15vw;
+    height: 100%;
+    background:none;
+    list-style-type: none;
+}
+
+.friend {
+    width: 15vw;
+    height: 60px;
+    background: grey;
+    border-bottom: 1px solid #DDD;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.friend img {
+    width: 45px;
+    height: 45px;
+    border-radius: 30px;
+    border: 2px solid #AAA;
+    object-fit: cover;
+    margin-left: 5px;
+    margin-right: 10px;
+}
+
+.friend .name {
+    font-size: 18px;
+}
+
+.friend.selected {
+    background: #a9a9a9;
+    color: #ffffff;
+}
+
+.friend.selected img {
+    border-color: white;
+}
+
+.friend:not(.selected):hover {
+    background: #DDD;
 }
