@@ -79,15 +79,27 @@ def home_view(request, session_id):
             session_ob = session.first()
             if user_ob not in session_ob.users.all():
                 session_ob.users.add(user_ob)
+            get_all_collaborators(session_id, user_ob.name)
 
             fileob = File.objects.filter(session_id=session_id).first()
             request.session[session_id] = {'file_id': fileob.id, 'last_changed': str(fileob.last_changed)}
 
             context["data"] = fileob.file_current
             context["language"] = fileob.language
+            context["current_user"] = user_ob.name
+            context["collabs"] = get_all_collaborators(session_id, user_ob.name)
             return render(request, "workarea.html", context)
         else:
             return redirect("/")
+
+
+def get_all_collaborators(session_id: str, current_user: str) -> list:
+    collaborators = []
+    session_ob = Session.objects.filter(id=session_id).first().users.all()
+    for i in session_ob:
+        if i.name != current_user:
+            collaborators.append(i.name)
+    return collaborators
 
 
 # Send changes to server
