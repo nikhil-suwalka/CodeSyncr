@@ -4,6 +4,9 @@ body{
     margin: 0;
     background: black;
 }
+a{
+    color: inherit;
+}
 
 nav{
     /*background: rgb(191, 205, 224);
@@ -31,7 +34,23 @@ nav{
     padding-left: 0.5em;
     padding-bottom: 0;
 }
+
+.project_name{
+    font-family: "Montserrat SemiBold", sans-serif;
+    margin-left: 1em;
+    margin-top: 12px;
+    height: 1em;
+    font-weight: lighter;
+    max-width: 50vw;
+    overflow: hidden;
+    min-width: 5vw;
+    line-height: 1em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .logo{
+    display: flex;
     color: white;
     font-family: Pacifico, sans-serif;
     font-size: 1.5em;
