@@ -11,7 +11,7 @@
 <body>
 <nav class="navbar">
     <div class="logo"><a href="/" style="text-decoration: none"><span class="clogo">C</span><span class="endlogo">odeSyncr</span></a>
-        <div class="project_name" contenteditable="true">Test</div>
+        <div class="project_name" id="project_name" contenteditable="true" onblur="project_name_change()">{{ project_name }}</div>
     </div>
     <ul class="navitems">
         <li class="navitem"><a href="">About</a></li>

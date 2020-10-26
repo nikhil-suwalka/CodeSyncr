@@ -23,12 +23,12 @@ urlpatterns = [
     path('update/<str:session_link>/', sync_with_db, name="sync_with_db"),
     path('refresh/<str:session_link>/', get_from_db, name="get_from_db"),
     path('clearsession/', clear_session, name="clear_session"),
-    path('samesession/<int:num>', same_session, name="same_session"),
+    # path('samesession/<int:num>', same_session, name="same_session"),
     path('change_language/<str:session_link>/', change_language, name="change_language"),
     path('execute_code/', execute_code_fun, name="execute_code_fun"),
     path('login/', login, name="login"),
     path('createlink/', create_link, name="createlink"),
     path('<str:session_id>/', home_view, name="home_view"),
-
+    path("change_project_name/<str:session_link>/", change_project_name, name="change_project_name")
 
 ]

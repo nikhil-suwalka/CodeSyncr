@@ -20,29 +20,29 @@
 </nav>
 <div>
     <section class="main_section">
-            <div class="table-title">
-                <h3>All Projects</h3>
-                <form action="/createlink" method="get">
-                    {% csrf_token %}
-                    <button type="submit">Create New Project</button>
-                </form>
-            </div>
-            <table class="table-fill">
-                <thead>
+        <div class="table-title">
+            <h3>All Projects</h3>
+            <form action="/createlink" method="get">
+                {% csrf_token %}
+                <button type="submit">Create New Project</button>
+            </form>
+        </div>
+        <table class="table-fill">
+            <thead>
+            <tr>
+                <th class="text-left">Links</th>
+            </tr>
+            </thead>
+            <tbody class="table-hover">
+
+            {% for link in links %}
                 <tr>
-                    <th class="text-left">Links</th>
+                    <td class="text-left" onclick="window.location='/{{ link.0 }}'">{{ link.1 }}</td>
                 </tr>
-                </thead>
-                <tbody class="table-hover">
+            {% endfor %}
 
-                {% for link in links %}
-                    <tr>
-                        <td class="text-left" onclick="window.location='/{{ link }}'">{{ link }}</td>
-                    </tr>
-                {% endfor %}
-
-                </tbody>
-            </table>
+            </tbody>
+        </table>
     </section>
 </div>
 </body>

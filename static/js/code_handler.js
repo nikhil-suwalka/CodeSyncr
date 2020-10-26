@@ -21,6 +21,22 @@ function language_changed() {
     });
 }
 
+function project_name_change(){
+    var new_name = $("#project_name").text();
+    $.ajax({
+        type: "POST",
+        url: "/change_project_name/" + session_link + "/",
+        dataType: "json",
+        data: {"new_name": new_name},
+        headers: {"X-CSRFToken": cookies["csrftoken"]},
+
+        success:
+            function (data) {
+
+            }
+    });
+}
+
 function execute_code() {
 
     var source = editor.getValue();

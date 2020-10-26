@@ -15,7 +15,7 @@ def main(request):
     if request.session.get("email", False):
         userob = User.objects.filter(email=request.session.get("email")).first()
         ob = Session.objects.filter(users=userob)
-        links = [i.id for i in ob]
+        links = [[i.id, i.project_name] for i in ob]
         return render(request, "home.html", {"links": links})
     else:
         return redirect("/login")
@@ -88,6 +88,7 @@ def home_view(request, session_id):
             context["language"] = fileob.language
             context["current_user"] = user_ob.name
             context["collabs"] = get_all_collaborators(session_id, user_ob.name)
+            context["project_name"] = session_ob.project_name
             return render(request, "workarea.html", context)
         else:
             return redirect("/")
@@ -104,6 +105,9 @@ def get_all_collaborators(session_id: str, current_user: str) -> list:
 
 # Send changes to server
 def sync_with_db(request, session_link):
+    if request.method == "GET":
+        raise Http404
+
     # session_link = request.get_full_path().split("/")[1]
 
     local_content = request.POST.get("data")
@@ -159,6 +163,8 @@ def sync_with_db(request, session_link):
 
 # Refresh from server
 def get_from_db(request, session_link):
+    if request.method == "GET":
+        raise Http404
     # session_link = request.get_full_path().split("/")[1]
     local_last_change = request.session[session_link]["last_changed"].replace('"', "")
     ob = File.objects.filter(id=request.session[session_link]['file_id']).first()
@@ -208,43 +214,62 @@ def get_from_db(request, session_link):
 
 
 def clear_session(request):
+    if request.method == "GET":
+        raise Http404
     request.session.flush()
     return redirect("/")
 
 
-def same_session(request, num: int):
-    request.session["session_id"] = num
-    request.session["file_id"] = num
-    ob = File.objects.filter(session_id=request.session["session_id"]).first()
-
-    request.session["last_changed"] = str(ob.last_changed)
-    return redirect("/")
+# TODO: Remove
+# def same_session(request, num: int):
+#     request.session["session_id"] = num
+#     request.session["file_id"] = num
+#     ob = File.objects.filter(session_id=request.session["session_id"]).first()
+#
+#     request.session["last_changed"] = str(ob.last_changed)
+#     return redirect("/")
 
 
 def change_language(request, session_link):
-    # session_link = request.get_full_path().split("/")[1]
-    lang = request.POST.get("language")
-    File.objects.filter(id=request.session[session_link]["file_id"]).update(language=lang)
+    if request.method == "POST":
+        # session_link = request.get_full_path().split("/")[1]
+        lang = request.POST.get("language")
+        File.objects.filter(id=request.session[session_link]["file_id"]).update(language=lang)
 
-    return HttpResponse()
+        return HttpResponse()
+    else:
+        raise Http404
+
+
+def change_project_name(request, session_link):
+    if request.method == "POST":
+        new_name = request.POST.get("new_name")
+        Session.objects.filter(id=session_link).update(project_name=new_name)
+        return HttpResponse()
+    else:
+        raise Http404
 
 
 def execute_code_fun(request):
-    lang = request.POST.get("language")
-    source = request.POST.get("source")
+    if request.method == "POST":
 
-    output = ""
-    if lang == "python":
-        output = run_python(source)
-    elif lang == "c_cpp":
-        output = run_cpp(source)
-    elif lang == "java":
-        output = run_java(source)
+        lang = request.POST.get("language")
+        source = request.POST.get("source")
 
-    output = output.replace('\\n', "<br>")
-    # output = "<br />".join(output.split("\n"))
-    # print("OUTPUT: ", output)
-    return HttpResponse(json.dumps({"output": output}), content_type="application/json")
+        output = ""
+        if lang == "python":
+            output = run_python(source)
+        elif lang == "c_cpp":
+            output = run_cpp(source)
+        elif lang == "java":
+            output = run_java(source)
+
+        output = output.replace('\\n', "<br>")
+        # output = "<br />".join(output.split("\n"))
+        # print("OUTPUT: ", output)
+        return HttpResponse(json.dumps({"output": output}), content_type="application/json")
+    else:
+        raise Http404
 
 
 def getUniqueCode():
