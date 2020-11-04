@@ -11,4 +11,4 @@ class FileAdmin(admin.ModelAdmin):
 
 admin.site.register(Session)
 admin.site.register(File, FileAdmin)
-admin.site.register(User)
+# admin.site.register(User)

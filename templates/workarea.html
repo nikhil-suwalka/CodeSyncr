@@ -11,7 +11,8 @@
 <body>
 <nav class="navbar">
     <div class="logo"><a href="/" style="text-decoration: none"><span class="clogo">C</span><span class="endlogo">odeSyncr</span></a>
-        <div class="project_name" id="project_name" contenteditable="true" onblur="project_name_change()">{{ project_name }}</div>
+        <div class="project_name" id="project_name" contenteditable="true"
+             onblur="project_name_change()">{{ project_name }}</div>
     </div>
     <ul class="navitems">
         <li class="navitem"><a href="">About</a></li>
@@ -46,16 +47,23 @@
                         </div>
                     </li>
                     <li class='friend selected'>
-                        <img src='{% static 'images/user.png' %}'/>
+                        <img style="border-color: #19ee19; border-width: 3px" src='{% static 'images/user.png' %}'/>
                         <div class='name'>
                             {{ current_user }}
                         </div>
                     </li>
                     {% for collab in collabs %}
                         <li class='friend'>
-                            <img src='{% static 'images/user.png' %}'/>
+
+                            {% if collab.1 == True %}
+                                <img style="border-color: #19ee19; border-width: 3px" src='{% static 'images/user.png' %}'/>
+
+                            {% else %}
+                                <img src='{% static 'images/user.png' %}'/>
+                            {% endif %}
                             <div class='name'>
-                                {{ collab }}
+                                {{ collab.0 }}
+
                             </div>
                         </li>
                     {% endfor %}

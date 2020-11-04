@@ -1,21 +1,14 @@
 from django.db import models
 
-
+from django.contrib.auth import get_user_model
 # Create your models here.
-
-class User(models.Model):
-    name = models.CharField(blank=False, null=False, max_length=255)
-    email = models.EmailField(blank=False, null=False, max_length=255)
-    password = models.CharField(blank=False, null=False, max_length=1000)
-
-    def __str__(self):
-        return str(self.name)
+# from django.contrib.auth.models import User
 
 
 class Session(models.Model):
     id = models.CharField(max_length=250, blank=False, null=False, unique=True, primary_key=True)
     creation_date = models.DateTimeField(null=False, auto_now=True, blank=False)
-    users = models.ManyToManyField(User, related_name="contributors")
+    users = models.ManyToManyField(get_user_model(), related_name="contributors")
     project_name = models.CharField(max_length=100, blank=False, null=False, default="Untitled Project")
 
     def __str__(self):

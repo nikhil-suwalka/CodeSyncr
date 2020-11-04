@@ -173,7 +173,6 @@ footer{
         height: 60px;
         background: grey;
         border-bottom: 1px solid #DDD;
-        cursor: pointer;
         display: flex;
         align-items: center;
         color: white;
@@ -234,7 +233,6 @@ footer{
         height: 60px;
         background: grey;
         border-bottom: 1px solid #DDD;
-        cursor: pointer;
         display: flex;
         align-items: center;
         color: white;
@@ -292,7 +290,6 @@ footer{
         height: 60px;
         background: grey;
         border-bottom: 1px solid #DDD;
-        cursor: pointer;
         display: flex;
         align-items: center;
         color: white;
@@ -445,7 +442,6 @@ button{
     height: 60px;
     background: grey;
     border-bottom: 1px solid #DDD;
-    cursor: pointer;
     display: flex;
     align-items: center;
     color: white;

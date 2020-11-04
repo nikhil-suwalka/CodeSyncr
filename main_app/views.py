@@ -1,19 +1,27 @@
 import json
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from diff_match_patch import diff_match_patch
+from django.contrib.auth import authenticate
+from django.contrib.auth import logout
+import django.contrib.auth
+
+from django.contrib.auth.models import User
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect
+from online_users.models import OnlineUserActivity
 
-from .models import *
 from .execute_code import *
-import hashlib
+from .models import *
 
 
 def main(request):
-    if request.session.get("email", False):
-        userob = User.objects.filter(email=request.session.get("email")).first()
+    if request.user.is_authenticated:
+        # if request.session.get("email", False):
+        # userob = User.objects.filter(email=request.session.get("email")).first()
+        userob = request.user
+        print("User:", userob.email, userob.first_name, "close")
         ob = Session.objects.filter(users=userob)
         links = [[i.id, i.project_name] for i in ob]
         return render(request, "home.html", {"links": links})
@@ -28,12 +36,16 @@ def login(request):
     if request.method == "POST":
 
         email = request.POST.get("email")
-        pwd = hashlib.sha256(request.POST.get("pwd").encode()).hexdigest()
+        pwd = request.POST.get("pwd")
         if request.POST.get("login"):
-            ob = User.objects.filter(email=email, password=pwd).first()
-            if ob:
+            # ob = User.objects.filter(email=email, password=pwd).first()
+            ob = authenticate(username=email, password=pwd)
+            if ob is not None:
+                django.contrib.auth.login(request, ob)
                 request.session['email'] = email
-                request.session['name'] = ob.name
+                request.session['name'] = ob.first_name
+                # user = authenticate(username=email, password=pwd)
+
             else:
                 print("WRONG PASSWORD")
                 return render(request, "login.html", context={"error": "Invalid credentials"})
@@ -42,9 +54,13 @@ def login(request):
             name = request.POST.get("name")
             if User.objects.filter(email=email).count() > 0:
                 return render(request, "login.html", context={"error": "Email already exists"})
-            User.objects.create(name=name, password=pwd, email=email)
+            # User.objects.create(name=name, password=pwd, email=email)
+            user = User.objects.create_user(username=email, email=email, password=pwd, first_name=name)
             request.session['email'] = email
             request.session['name'] = name
+            django.contrib.auth.login(request, user)
+
+            user = authenticate(username=email, password=pwd)
 
         return redirect("/")
     else:
@@ -59,7 +75,8 @@ def create_link(request):
         s = Session.objects.create(id=sid)
         f = File.objects.create(session_id=s)
         request.session[sid] = {'file_id': f.id, 'last_changed': str(f.last_changed)}
-        s.users.add(User.objects.filter(email=request.session.get('email')).first())
+        # s.users.add(User.objects.filter(email=request.session.get('email')).first())
+        s.users.add(request.user)
         print("New session created: ", sid)
         return redirect("/" + str(sid))
         # return render(request, "workarea.html", context)
@@ -75,19 +92,20 @@ def home_view(request, session_id):
 
             if (session.count() == 0):
                 raise Http404
-            user_ob = User.objects.filter(email=request.session.get("email")).first()
+            # user_ob = User.objects.filter(email=request.session.get("email")).first()
+            user_ob = request.user
             session_ob = session.first()
             if user_ob not in session_ob.users.all():
                 session_ob.users.add(user_ob)
-            get_all_collaborators(session_id, user_ob.name)
+            print(get_all_collaborators(session_id, user_ob.first_name))
 
             fileob = File.objects.filter(session_id=session_id).first()
             request.session[session_id] = {'file_id': fileob.id, 'last_changed': str(fileob.last_changed)}
 
             context["data"] = fileob.file_current
             context["language"] = fileob.language
-            context["current_user"] = user_ob.name
-            context["collabs"] = get_all_collaborators(session_id, user_ob.name)
+            context["current_user"] = user_ob.first_name
+            context["collabs"] = get_all_collaborators(session_id, user_ob.first_name)
             context["project_name"] = session_ob.project_name
             return render(request, "workarea.html", context)
         else:
@@ -96,10 +114,12 @@ def home_view(request, session_id):
 
 def get_all_collaborators(session_id: str, current_user: str) -> list:
     collaborators = []
-    session_ob = Session.objects.filter(id=session_id).first().users.all()
-    for i in session_ob:
-        if i.name != current_user:
-            collaborators.append(i.name)
+    users = Session.objects.filter(id=session_id).first().users.all()
+    online_users = get_online_users()
+
+    for user in users:
+        if user.first_name != current_user:
+            collaborators.append([user.first_name, user.id in online_users])
     return collaborators
 
 
@@ -214,8 +234,9 @@ def get_from_db(request, session_link):
 
 
 def clear_session(request):
-    if request.method == "GET":
-        raise Http404
+    # if request.method == "GET":
+    #     raise Http404
+    logout(request)
     request.session.flush()
     return redirect("/")
 
@@ -282,3 +303,8 @@ def getUniqueCode():
     if Session.objects.filter(id=s).count() > 0:
         return getUniqueCode()
     return s
+
+
+def get_online_users():
+    ids = [user.id for user in OnlineUserActivity.get_user_activities(timedelta(minutes=2))]
+    return (ids)
