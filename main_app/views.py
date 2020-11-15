@@ -241,8 +241,11 @@ def delete_user_from_project(request, session_link):
         user_ob = request.user
         session = Session.objects.filter(id=session_link)
         session_ob = session.first()
+        if session_ob.users.all().count() <= 1:
+            session.delete()
         if user_ob in session_ob.users.all():
             session_ob.users.remove(user_ob)
+
         return HttpResponse(json.dumps({"msg": "Done"}))
 
     else:

@@ -93,7 +93,6 @@
     var local_storage_dict = {};
     local_storage_dict["copy"] = "{{ data }}";
     local_storage_dict["version"] ={{ version }};
-    alert(JSON.stringify(local_storage_dict));
 
     localStorage.setItem(session_link, JSON.stringify(local_storage_dict));
 
