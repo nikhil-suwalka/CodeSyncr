@@ -21,7 +21,7 @@ def main(request):
         # if request.session.get("email", False):
         # userob = User.objects.filter(email=request.session.get("email")).first()
         userob = request.user
-        print("User:", userob.email, userob.first_name, "close")
+        print("User:", userob.email, userob.first_name)
         ob = Session.objects.filter(users=userob)
         links = [[i.id, i.project_name] for i in ob]
         return render(request, "home.html", {"links": links})
@@ -60,7 +60,7 @@ def login(request):
             request.session['name'] = name
             django.contrib.auth.login(request, user)
 
-            user = authenticate(username=email, password=pwd)
+            authenticate(username=email, password=pwd)
 
         return redirect("/")
     else:
@@ -289,6 +289,19 @@ def execute_code_fun(request):
         # output = "<br />".join(output.split("\n"))
         # print("OUTPUT: ", output)
         return HttpResponse(json.dumps({"output": output}), content_type="application/json")
+    else:
+        raise Http404
+
+
+def delete_user_from_project(request, session_link):
+    if request.method == "POST":
+        user_ob = request.user
+        session = Session.objects.filter(id=session_link)
+        session_ob = session.first()
+        if user_ob in session_ob.users.all():
+            session_ob.users.remove(user_ob)
+        return HttpResponse(json.dumps({"msg": "Done"}))
+
     else:
         raise Http404
 

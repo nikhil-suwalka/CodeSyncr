@@ -35,31 +35,51 @@
             </tr>
             </thead>
             <tbody class="table-hover">
+            {#            At least one project found #}
+            {% if links %}
+                {% for link in links %}
+                    <tr>
+                        <td class="text-left">
 
-            {% for link in links %}
+                            <div style="display: flex; justify-content: space-between">
+                                <div style="height: 100%;width: 100%;cursor: pointer"
+                                     onclick="window.location='/{{ link.0 }}'">{{ link.1 }}</div>
+                                <button name=" copy2clipboard" type="button" id="copy2clipboard"
+                                        style="line-height:3;padding-left: 5px;padding-right: 5px; margin-right: 5px"
+                                        onclick="copy_clipboard('{{ link.0 }}')">
+                                    <svg width="2.4em" height="1.2em" viewBox="0 0 16 16" class="bi bi-clipboard"
+                                         fill="green"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                              d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                                        <path fill-rule="evenodd"
+                                              d="M9.5 1h-3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                                    </svg>
+                                </button>
+
+                                <button type="button"
+                                        style="line-height:2;padding-left: 5px;padding-right: 5px;align-content: center;align-items: center;"
+                                        onclick="delete_user('{{ link.0 }}')">
+                                    <svg height="1.2em" viewBox="-40 0 427 427.00131" width="2.4em"
+                                         xmlns="http://www.w3.org/2000/svg" fill="red">
+                                        <path d="m232.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0"/>
+                                        <path d="m114.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0"/>
+                                        <path d="m28.398438 127.121094v246.378906c0 14.5625 5.339843 28.238281 14.667968 38.050781 9.285156 9.839844 22.207032 15.425781 35.730469 15.449219h189.203125c13.527344-.023438 26.449219-5.609375 35.730469-15.449219 9.328125-9.8125 14.667969-23.488281 14.667969-38.050781v-246.378906c18.542968-4.921875 30.558593-22.835938 28.078124-41.863282-2.484374-19.023437-18.691406-33.253906-37.878906-33.257812h-51.199218v-12.5c.058593-10.511719-4.097657-20.605469-11.539063-28.03125-7.441406-7.421875-17.550781-11.5546875-28.0625-11.46875h-88.796875c-10.511719-.0859375-20.621094 4.046875-28.0625 11.46875-7.441406 7.425781-11.597656 17.519531-11.539062 28.03125v12.5h-51.199219c-19.1875.003906-35.394531 14.234375-37.878907 33.257812-2.480468 19.027344 9.535157 36.941407 28.078126 41.863282zm239.601562 279.878906h-189.203125c-17.097656 0-30.398437-14.6875-30.398437-33.5v-245.5h250v245.5c0 18.8125-13.300782 33.5-30.398438 33.5zm-158.601562-367.5c-.066407-5.207031 1.980468-10.21875 5.675781-13.894531 3.691406-3.675781 8.714843-5.695313 13.925781-5.605469h88.796875c5.210937-.089844 10.234375 1.929688 13.925781 5.605469 3.695313 3.671875 5.742188 8.6875 5.675782 13.894531v12.5h-128zm-71.199219 32.5h270.398437c9.941406 0 18 8.058594 18 18s-8.058594 18-18 18h-270.398437c-9.941407 0-18-8.058594-18-18s8.058593-18 18-18zm0 0"/>
+                                        <path d="m173.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0"/>
+                                    </svg>
+                                </button>
+                            </div>
+
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                {# No projects #}
+            {% else %}
                 <tr>
-                    <td class="text-left">
-
-                        <div style="display: flex; justify-content: space-between">
-                            <div style="height: 100%;width: 100%;cursor: pointer"
-                                 onclick="window.location='/{{ link.0 }}'">{{ link.1 }}</div>
-                            <button name=" copy2clipboard" type="button" id="copy2clipboard"
-                                    style="line-height:3;padding-left: 5px;padding-right: 5px"
-                                    onclick="copy_clipboard('{{ link.0 }}')">
-
-                                <svg width="2em" height="1em" viewBox="0 0 16 16" class="bi bi-clipboard"
-                                     fill="currentColor"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                          d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
-                                    <path fill-rule="evenodd"
-                                          d="M9.5 1h-3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </td>
+                    <td style="color: red">No projects found</td>
                 </tr>
-            {% endfor %}
+            {% endif %}
 
             </tbody>
         </table>
@@ -93,6 +113,31 @@
         document.body.removeChild(dummy);
 
     }
+
+    cookies = document.cookie.split(';').reduce((cookies, cookie) => {
+        const [name, value] = cookie.split('=').map(c => c.trim());
+        cookies[name] = value;
+        return cookies;
+    }, {});
+
+    function delete_user(link) {
+
+        $.ajax({
+            type: "POST",
+            url: "/delete_user_from_project/" + link + "/",
+            dataType: "json",
+            data: {"data": ""},
+            headers: {"X-CSRFToken": cookies["csrftoken"]},
+
+            success:
+                function (data) {
+                    location.reload();
+                }
+        });
+
+
+    }
+
 
 </script>
 </body>

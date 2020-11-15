@@ -29,6 +29,7 @@ urlpatterns = [
     path('login/', login, name="login"),
     path('createlink/', create_link, name="createlink"),
     path('<str:session_id>/', home_view, name="home_view"),
-    path("change_project_name/<str:session_link>/", change_project_name, name="change_project_name")
+    path("change_project_name/<str:session_link>/", change_project_name, name="change_project_name"),
+    path("delete_user_from_project/<str:session_link>/", delete_user_from_project, name="delete_user_from_project")
 
 ]
