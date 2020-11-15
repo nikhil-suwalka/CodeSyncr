@@ -5,10 +5,11 @@ from django.contrib import admin
 from .models import *
 
 
-class FileAdmin(admin.ModelAdmin):
-    readonly_fields = ('last_changed',)
+# class FileAdmin(admin.ModelAdmin):
+#     readonly_fields = ('last_changed',)
 
 
 admin.site.register(Session)
-admin.site.register(File, FileAdmin)
-# admin.site.register(User)
+# admin.site.register(File, FileAdmin)
+admin.site.register(File)
+admin.site.register(Diff)

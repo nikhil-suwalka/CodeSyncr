@@ -26,6 +26,8 @@ function handleKeyPress(e) {
 // when the user has stopped pressing on keys, set the timeout
 // if the user presses on keys before the timeout is reached, then this timeout is canceled
 function handleKeyUp(e) {
+    var dict = JSON.parse(localStorage.getItem(session_link));
+
     window.clearTimeout(timer); // prevent errant multiple timeouts from being generated
     timer = window.setTimeout(() => {
         console.log("Stopped typing")
@@ -34,15 +36,23 @@ function handleKeyUp(e) {
             type: "POST",
             url: "/update/" + session_link + "/",
             dataType: "json",
-            data: {"data": typer.getSession().getValue()},
+            data: {
+                "data": typer.getSession().getValue(),
+                "version": parseInt(dict.version) + 1,
+                "copy": dict.copy
+            },
             headers: {"X-CSRFToken": cookies["csrftoken"]},
 
             success:
                 function (data) {
                     cursor = editor.selection.getCursor();
-                    typer.setValue(data.content, 1);
-                    typer.moveCursorTo(cursor.row, cursor.column);
 
+                    var local_storage_dict = {};
+                    local_storage_dict["copy"] = data.latest_data;
+                    local_storage_dict["version"] = data.version;
+                    localStorage.setItem(session_link, JSON.stringify(local_storage_dict));
+                    typer.setValue(data.latest_data, 1);
+                    typer.moveCursorTo(cursor.row, cursor.column);
 
                 }
         });
@@ -56,18 +66,29 @@ function handleKeyUp(e) {
 
 setInterval(function () {
 
+    var dict = JSON.parse(localStorage.getItem(session_link));
+
     if (!stop_receiving) {
         // console.log("timeout2")
         $.ajax({
             type: "POST",
             url: "/refresh/" + session_link + "/",
             dataType: "json",
-            data: {"data": typer.getSession().getValue()},
+            data: {
+                "data": typer.getSession().getValue(),
+                "version": parseInt(dict.version)
+            },
             headers: {"X-CSRFToken": cookies["csrftoken"]},
             success:
                 function (data) {
-                    if (data.change === "true")
-                        typer.setValue(data.content, 1);
+                    if (data.change === "true" && !stop_receiving) {
+                        typer.setValue(data.latest_data, 1);
+                        var local_storage_dict = {};
+                        local_storage_dict["copy"] = data.latest_data;
+                        local_storage_dict["version"] = data.version;
+                        localStorage.setItem(session_link, JSON.stringify(local_storage_dict));
+
+                    }
                 }
         });
     }

@@ -56,7 +56,8 @@
                         <li class='friend'>
 
                             {% if collab.1 == True %}
-                                <img style="border-color: #19ee19; border-width: 3px" src='{% static 'images/user.png' %}'/>
+                                <img style="border-color: #19ee19; border-width: 3px"
+                                     src='{% static 'images/user.png' %}'/>
 
                             {% else %}
                                 <img src='{% static 'images/user.png' %}'/>
@@ -88,6 +89,15 @@
     editor.session.setMode("ace/mode/{{ language }}");
 
     $("#language").val("{{ language }}");
+
+    var local_storage_dict = {};
+    local_storage_dict["copy"] = "{{ data }}";
+    local_storage_dict["version"] ={{ version }};
+    alert(JSON.stringify(local_storage_dict));
+
+    localStorage.setItem(session_link, JSON.stringify(local_storage_dict));
+
+
 </script>
 <script src="{% static 'js/text_change_ajax.js' %}"></script>
 </body>

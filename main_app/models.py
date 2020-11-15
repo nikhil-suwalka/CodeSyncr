@@ -1,6 +1,8 @@
 from django.db import models
 
 from django.contrib.auth import get_user_model
+
+
 # Create your models here.
 # from django.contrib.auth.models import User
 
@@ -19,10 +21,23 @@ class File(models.Model):
     name = models.CharField(blank=False, null=False, default="main", max_length=100)
     file_current = models.TextField(blank=True, null=False, default="")
     file_backup = models.TextField(blank=True, null=False, default="")
+    version = models.IntegerField(blank=False, null=False, default=0)
+
     session_id = models.ForeignKey(Session, on_delete=models.CASCADE, related_name="session_link", null=False,
                                    blank=False)
-    last_changed = models.DateTimeField(auto_now=True, null=False, blank=False)
+    # last_changed = models.DateTimeField(auto_now=True, null=False, blank=False)
     language = models.CharField(blank=False, null=False, default='python', max_length=100)
 
     def __str__(self):
         return str(self.id)
+
+
+class Diff(models.Model):
+    data = models.TextField(blank=True, null=False, default="")
+    version = models.IntegerField(blank=False, null=False, default=0)
+    time = models.DateTimeField(auto_now=True, null=False, blank=False)
+
+    file_id = models.ForeignKey(File, on_delete=models.CASCADE, related_name="file_link", null=False, blank=False)
+
+    def __str__(self):
+        return str(self.version)

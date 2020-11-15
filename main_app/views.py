@@ -69,22 +69,21 @@ def login(request):
 
 def create_link(request):
     if request.method == "POST":
-        print("create_link called by POST")
+        raise Http404
     else:
         sid = getUniqueCode()
         s = Session.objects.create(id=sid)
         f = File.objects.create(session_id=s)
-        request.session[sid] = {'file_id': f.id, 'last_changed': str(f.last_changed)}
+        request.session[sid] = {'file_id': f.id}
         # s.users.add(User.objects.filter(email=request.session.get('email')).first())
         s.users.add(request.user)
-        print("New session created: ", sid)
         return redirect("/" + str(sid))
         # return render(request, "workarea.html", context)
 
 
 def home_view(request, session_id):
     if request.method == "POST":
-        print("home_view called by POST")
+        raise Http404
     else:
         if request.session.get("email", False):
             context = {}
@@ -97,12 +96,12 @@ def home_view(request, session_id):
             session_ob = session.first()
             if user_ob not in session_ob.users.all():
                 session_ob.users.add(user_ob)
-            print(get_all_collaborators(session_id, user_ob.first_name))
 
             fileob = File.objects.filter(session_id=session_id).first()
-            request.session[session_id] = {'file_id': fileob.id, 'last_changed': str(fileob.last_changed)}
+            request.session[session_id] = {'file_id': fileob.id}
 
             context["data"] = fileob.file_current
+            context["version"] = fileob.version
             context["language"] = fileob.language
             context["current_user"] = user_ob.first_name
             context["collabs"] = get_all_collaborators(session_id, user_ob.first_name)
@@ -128,109 +127,63 @@ def sync_with_db(request, session_link):
     if request.method == "GET":
         raise Http404
 
-    # session_link = request.get_full_path().split("/")[1]
-
-    local_content = request.POST.get("data")
-    # print(local_content)
-    ob = File.objects.filter(id=request.session[session_link]['file_id']).first()
-    server_content = ob.file_current
-    backup_content = ob.file_backup
-
-    # Another method
-    # diff_text = ""
-    # for line in difflib.unified_diff(server_content.split('\n'), local_content.split('\n')):
-    #     diff_text += line + "\n"
-    #
-    # # for diff in whatthepatch.parse_patch(diff_text):
-    # #     print(diff)
-    #
-    # diff = [x for x in whatthepatch.parse_patch(diff_text)]
-    # diff = diff[0]
-    # print(diff)
-    # tzu = whatthepatch.apply_diff(diff, server_content)
-    # print(tzu)
-
-    # Merge
+    data = request.POST.get("data")
+    version = int(request.POST.get("version"))
+    copy = request.POST.get("copy")
     dmp = diff_match_patch()
-    diff = dmp.diff_main(server_content, local_content, True)
+    patches = dmp.patch_make(copy, data)
+    diff = dmp.patch_toText(patches)
+    session_ob = Session.objects.filter(id=session_link).first()
+    fileob = File.objects.filter(session_id=session_ob).first()
 
-    if len(diff) > 2:
-        dmp.diff_cleanupSemantic(diff)
-    patch_list = dmp.patch_make(server_content, local_content, diff)
-    patch_text = dmp.patch_toText(patch_list)
-    patches = dmp.patch_fromText(patch_text)
-    results = dmp.patch_apply(patches, server_content)
+    if Diff.objects.filter(file_id=fileob, version=version).count() > 0:
+        version += 1
 
-    # print(local_content, "\t", server_content)
-    print(results)
-    time = datetime.now()
-    if (results[1][0]):
-        # time = datetime.now(pytz.timezone("Asia/Kolkata"))
-        File.objects.filter(id=request.session[session_link]['file_id']).update(file_backup=server_content,
-                                                                                file_current=results[0],
-                                                                                last_changed=time)
-        request.session[session_link]["last_changed"] = str(time)
-        return HttpResponse(json.dumps({"content": results[0]}), content_type="application/json")
+    # TODO: Improve
+    if fileob.version < version:
+        Diff.objects.create(data=diff, version=version, file_id=fileob)
+
+        patches = dmp.patch_fromText(diff)
+        new_text, _ = dmp.patch_apply(patches, fileob.file_current)
+        File.objects.filter(session_id=session_ob).update(file_current=new_text, file_backup=new_text, version=version)
 
     else:
-        File.objects.filter(id=request.session[session_link]['file_id']).update(file_backup=server_content,
-                                                                                file_current=local_content,
-                                                                                last_changed=time)
-        request.session[session_link]["last_changed"] = str(time)
+        diff_obs = Diff.objects.filter(file_id=fileob, version__gte=version).order_by('version')
+        for diff_ob in diff_obs:
+            patches = dmp.patch_fromText(diff_ob.data)
+            data, _ = dmp.patch_apply(patches, data)
+            version = diff_ob.version
+        version += 1
+        File.objects.filter(session_id=session_ob).update(file_current=data, file_backup=data, version=version)
+        Diff.objects.create(file_id=fileob, data=diff, version=version)
+        new_text = data
 
-        return HttpResponse(json.dumps({"content": local_content}), content_type="application/json")
+    return HttpResponse(json.dumps({"version": version, "latest_data": new_text}), content_type="application/json")
 
 
 # Refresh from server
 def get_from_db(request, session_link):
     if request.method == "GET":
         raise Http404
-    # session_link = request.get_full_path().split("/")[1]
-    local_last_change = request.session[session_link]["last_changed"].replace('"', "")
-    ob = File.objects.filter(id=request.session[session_link]['file_id']).first()
-    server_last_change = str(ob.last_changed)
 
-    # print(local_last_change, server_last_change)
-    if server_last_change != local_last_change:
-        # print("Changed")
-        #
-        # # Merge
-        # local_content = request.POST.get("data")
-        server_content = ob.file_current
-        # backup_content = ob.file_backup
-        #
-        # dmp = diff_match_patch()
-        # dmp.Diff_Timeout = 5
-        # # print("------------")
-        # # print(local_content, server_content)
-        # diff = dmp.diff_main(backup_content, server_content, True)
-        # print("DIFF: ", dmp.Diff_Timeout)
-        # if len(diff) > 2:
-        #     dmp.diff_cleanupSemantic(diff)
-        # patch_list = dmp.patch_make(backup_content, server_content, diff)
-        # patch_text = dmp.patch_toText(patch_list)
-        # patches = dmp.patch_fromText(patch_text)
-        # results = dmp.patch_apply(patches, local_content)
-        #
-        # request.session["last_changed"] = server_last_change
-        # print("xyz")
-        # print(request.session["last_changed"], server_last_change)
-        #
-        # print(results)
-        # if (len(results) > 0 and len(results[1]) > 0 and results[1][0]):
-        #     return HttpResponse(json.dumps({"change": "true", "content": results[0]}),
-        #                         content_type="application/json")
-        # else:
-        #     return HttpResponse(json.dumps({"change": "true", "content": server_content}),
-        #                         content_type="application/json")
+    data = request.POST.get("data")
+    version = int(request.POST.get("version"))
+    dmp = diff_match_patch()
+    session_ob = Session.objects.filter(id=session_link).first()
+    fileob = File.objects.filter(session_id=session_ob).first()
+    diff_obs = Diff.objects.filter(file_id=fileob, version__gt=version).order_by('version')
 
-        return HttpResponse(json.dumps({"change": "true", "content": server_content}),
+    if diff_obs.count() > 0:
+        for diff_ob in diff_obs:
+            patches = dmp.patch_fromText(diff_ob.data)
+            data, _ = dmp.patch_apply(patches, data)
+            version = diff_ob.version
+
+        return HttpResponse(json.dumps({"change": "true", "version": version, "latest_data": data}),
                             content_type="application/json")
 
-    else:
-        # print("Not Changed")
-
-        return HttpResponse(json.dumps({"change": "false"}), content_type="application/json")
+    return HttpResponse(json.dumps({"change": "false"}),
+                        content_type="application/json")
 
 
 def clear_session(request):
@@ -239,16 +192,6 @@ def clear_session(request):
     logout(request)
     request.session.flush()
     return redirect("/")
-
-
-# TODO: Remove
-# def same_session(request, num: int):
-#     request.session["session_id"] = num
-#     request.session["file_id"] = num
-#     ob = File.objects.filter(session_id=request.session["session_id"]).first()
-#
-#     request.session["last_changed"] = str(ob.last_changed)
-#     return redirect("/")
 
 
 def change_language(request, session_link):
