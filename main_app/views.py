@@ -134,7 +134,8 @@ def sync_with_db(request, session_link):
     patches = dmp.patch_make(copy, data)
     diff = dmp.patch_toText(patches)
     session_ob = Session.objects.filter(id=session_link).first()
-    fileob = File.objects.filter(session_id=session_ob).first()
+    file = File.objects.filter(session_id=session_ob)
+    fileob = file.first()
 
     if Diff.objects.filter(file_id=fileob, version=version).count() > 0:
         version += 1
@@ -145,7 +146,7 @@ def sync_with_db(request, session_link):
 
         patches = dmp.patch_fromText(diff)
         new_text, _ = dmp.patch_apply(patches, fileob.file_current)
-        File.objects.filter(session_id=session_ob).update(file_current=new_text, file_backup=new_text, version=version)
+        file.update(file_current=new_text, file_backup=new_text, version=version)
 
     else:
         diff_obs = Diff.objects.filter(file_id=fileob, version__gte=version).order_by('version')
@@ -154,7 +155,7 @@ def sync_with_db(request, session_link):
             data, _ = dmp.patch_apply(patches, data)
             version = diff_ob.version
         version += 1
-        File.objects.filter(session_id=session_ob).update(file_current=data, file_backup=data, version=version)
+        file.update(file_current=data, file_backup=data, version=version)
         Diff.objects.create(file_id=fileob, data=diff, version=version)
         new_text = data
 
@@ -166,18 +167,21 @@ def get_from_db(request, session_link):
     if request.method == "GET":
         raise Http404
 
-    data = request.POST.get("data")
+    # data = request.POST.get("data")
     version = int(request.POST.get("version"))
-    dmp = diff_match_patch()
+    # dmp = diff_match_patch()
     session_ob = Session.objects.filter(id=session_link).first()
     fileob = File.objects.filter(session_id=session_ob).first()
     diff_obs = Diff.objects.filter(file_id=fileob, version__gt=version).order_by('version')
 
     if diff_obs.count() > 0:
-        for diff_ob in diff_obs:
-            patches = dmp.patch_fromText(diff_ob.data)
-            data, _ = dmp.patch_apply(patches, data)
-            version = diff_ob.version
+        data = fileob.file_current
+        version = diff_obs.all().last().version
+
+        # for diff_ob in diff_obs:
+        #     patches = dmp.patch_fromText(diff_ob.data)
+        #     data, _ = dmp.patch_apply(patches, data)
+        #     version = diff_ob.version
 
         return HttpResponse(json.dumps({"change": "true", "version": version, "latest_data": data}),
                             content_type="application/json")

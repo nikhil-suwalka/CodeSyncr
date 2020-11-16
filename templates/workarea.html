@@ -91,7 +91,7 @@
     $("#language").val("{{ language }}");
 
     var local_storage_dict = {};
-    local_storage_dict["copy"] = "{{ data }}";
+    local_storage_dict["copy"] = `{{ data }}`;
     local_storage_dict["version"] ={{ version }};
 
     localStorage.setItem(session_link, JSON.stringify(local_storage_dict));

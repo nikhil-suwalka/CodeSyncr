@@ -264,6 +264,7 @@ footer{
 
     .main_section #codeoutputdiv #codeoutput{
         min-height: 75vh;
+        max-height: 40px;
         color:white;
 
     }
