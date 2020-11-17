@@ -1,7 +1,6 @@
 let timer, timeoutVal = 1000; // time it takes to wait for user to stop typing in ms
 
-// const status = document.getElementById('status');
-var typer = ace.edit("codearea");
+var typer = ace.edit("codearea", {autoScrollEditorIntoView: true});
 
 var aceDiv = document.getElementById("codearea");
 var stop_receiving = false;

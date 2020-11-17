@@ -138,5 +138,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
     '/static/css',
-    '/static/js'
+    '/static/js',
+    '/static/bootstrap',
+    '/static/img',
+    '/static/fonts',
 ]

@@ -1,9 +1,8 @@
 
 link = window.location.href.split("/");
 session_link = link[link.length - 2]
-function language_changed() {
+function language_changed(lang) {
 
-    var lang = $("#language").val();
 
     editor.session.setMode("ace/mode/" + lang);
 
@@ -23,6 +22,10 @@ function language_changed() {
 
 function project_name_change(){
     var new_name = $("#project_name").text();
+    if(new_name.length === 0) {
+        $("#project_name").text("Untitled Project");
+        new_name = "Untitled Project";
+    }
     $.ajax({
         type: "POST",
         url: "/change_project_name/" + session_link + "/",
@@ -41,7 +44,7 @@ function project_name_change(){
 function execute_code() {
 
     var source = editor.getValue();
-    var lang = $("#language").val();
+    var lang = $("#language").html();
 
 
     $.ajax({

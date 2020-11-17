@@ -1,103 +1,155 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>CodeSyncr</title>
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/ionicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/line-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Bold-BS4-Pricing-Table-Style-48-1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Bold-BS4-Pricing-Table-Style-48.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Footer-Basic.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Footer-Clean.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Footer-Dark.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Login-Form-Dark.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Navigation-Clean.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Registration-Form-with-Photo.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    <style>
+        #codearea * {
+            font-family: monospace !important;
+            font-size: 16px !important;
+            direction: ltr !important;
+            text-align: left !important;
+            position: absolute;
+        }
+
+
+    </style>
 
 </head>
-<body>
-<nav class="navbar">
-    <div class="logo"><a href="/" style="text-decoration: none"><span class="clogo">C</span><span class="endlogo">odeSyncr</span></a>
-        <div class="project_name" id="project_name" contenteditable="true"
+
+<body style="background-image: url({% static 'img/star-sky.jpg' %})">
+<nav class="navbar navbar-light navbar-expand-md navigation-clean">
+    <div class="container"><a class="navbar-brand text-left" href="#" style="display:flex"><div onclick="window.open('/', '_self')"> CodeSyncr</div>
+        <div id="project_name" style="max-width: 50vw;min-width: 5vw;margin-left: 1em;cursor: text;"
+             contenteditable="true"
              onblur="project_name_change()">{{ project_name }}</div>
+    </a>
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
+                class="navbar-toggler-icon"></span></button>
+        <div
+                class="collapse navbar-collapse" id="navcol-1">
+            <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item" role="presentation"><a class="nav-link" href="/">My Projects</a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link" href="/clearsession">Logout</a></li>
+            </ul>
+        </div>
     </div>
-    <ul class="navitems">
-        <li class="navitem"><a href="">About</a></li>
-        <li class="navitem"><a href="">Contact Us</a></li>
-        <li class="navitem"><a href="/clearsession">Logout</a></li>
-    </ul>
 </nav>
-<form>{% csrf_token %}
-    <section class="main_section">
-        <div class="container">
-            <div name="" id="codearea" cols="30" rows="10">{{ data }}</div>
-            <div id="codeoutputdiv">
-                <select name="language" id="language" onchange="language_changed()">
-                    <option value="c_cpp">C++</option>
-                    <option value="python">python</option>
-                    <option value="java">Java</option>
-                    <option value="php">PHP</option>
-                    <option value="javascript">JavaScript</option>
-                </select>
-                <button type="button" onclick="execute_code()">
-                    RUN
+<section id="codeSection">
+    <div id="codeArea" style="all: unset; height: 70vh;
+    width: 150vw;">
+        <div id="codearea" style="height: 100%; width: 100%;">{{ data }}</div>
+    </div>
+    <div id="codeOutput">
+        <div id="codeMenu">
+            <div class="dropdown ">
+                <button id="language" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                        aria-expanded="true"
+                        type="button" style="background-color: rgb(102,102,103);margin: 0.5em;height: 38px;">Language
                 </button>
-                <div id="codeoutput" style="overflow: auto;"></div>
-
+                <div class="dropdown-menu " role="menu">
+                    <a class="dropdown-item" role="presentation" href="#" onclick="language_changed('c_cpp')">C++</a>
+                    <a class="dropdown-item" role="presentation" href="#"
+                       onclick="language_changed('python')">Python</a>
+                    <a class="dropdown-item" role="presentation" href="#" onclick="language_changed('java')">Java</a>
+                </div>
             </div>
-            <div id="collab_list">
+            <button class="btn btn-primary" type="button"
+                    style="margin: 0.5em;background-color: rgb(114,180,82);height: 38px;">Run
+            </button>
+            <div class="dropdown ">
+                <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="true"
+                        type="button" style="background-color: rgb(102,102,103);margin: 0.5em;height: 38px;left:95%">
+                    Online - {{ num_of_collabs }}&nbsp;
+                </button>
+                <div class="dropdown-menu "
+                     role="menu">
+                    <a class="dropdown-item" style="color: #19ee19" role="presentation" href="#">
+                        <div style="display:flex"><i class="fa fa-user-circle-o"
+                                                     style="padding: 0;margin-right: 0.5em;width: 21px;font-size: 23px;padding-top: 4px;"></i><span
+                                style="font-size: 23px;">{{ current_user }}</span></div>
+                    </a>
 
-                <ul id='friend-list'>
-                    <li>
-                        <div class="collab_heading">
-                            Collaborators
-                        </div>
-                    </li>
-                    <li class='friend selected'>
-                        <img style="border-color: #19ee19; border-width: 3px" src='{% static 'images/user.png' %}'/>
-                        <div class='name'>
-                            {{ current_user }}
-                        </div>
-                    </li>
+
                     {% for collab in collabs %}
-                        <li class='friend'>
 
-                            {% if collab.1 == True %}
-                                <img style="border-color: #19ee19; border-width: 3px"
-                                     src='{% static 'images/user.png' %}'/>
+                        {% if collab.1 == True %}
+                            <a class="dropdown-item" style="color: #19ee19" role="presentation" href="#">
 
-                            {% else %}
-                                <img src='{% static 'images/user.png' %}'/>
-                            {% endif %}
-                            <div class='name'>
-                                {{ collab.0 }}
+                        {% else %}
+                            <a class="dropdown-item" role="presentation" href="#">
+                        {% endif %}
+                    <div style="display:flex"><i class="fa fa-user-circle-o"
+                                                 style="padding: 0;margin-right: 0.5em;width: 21px;font-size: 23px;padding-top: 4px;"></i><span
+                            style="font-size: 23px;">{{ collab.0 }}</span></div>
+                    </a>
 
-                            </div>
-                        </li>
                     {% endfor %}
-                </ul>
+
+
+                </div>
             </div>
         </div>
-    </section>
-</form>
-
-<!-- <footer>
-    <div>
-        <p>Made with Django</p>
+        <div id="divTextArea"><textarea id="codeoutput" readonly=""></textarea></div>
     </div>
-</footer> -->
+</section>
+<div style="height: 50px;"></div>
+<div class="footer-basic">
+    <footer>
+        <div class="social"><a href="#"><i class="icon ion-social-instagram"></i></a><a href="#"><i
+                class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a
+                href="#"><i class="icon ion-social-facebook"></i></a></div>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a href="#">Home</a></li>
+            <li class="list-inline-item"><a href="#">Services</a></li>
+            <li class="list-inline-item"><a href="#">About</a></li>
+            <li class="list-inline-item"><a href="#">Terms</a></li>
+            <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
+        </ul>
+        <p class="copyright">CodeSyncr © 2020</p>
+    </footer>
+</div>
+<script src="{% static 'js/jquery.min.js' %} "></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+
+
 <script src="{% static 'ace-src/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'js/text_change_ajax.js' %}"></script>
 <script src="{% static 'js/code_handler.js' %}" type="text/javascript" charset="utf-8"></script>
+
 <script>
-
-
     var editor = ace.edit("codearea");
     editor.setTheme("ace/theme/monokai");
     editor.session.setMode("ace/mode/{{ language }}");
-
-    $("#language").val("{{ language }}");
-
+    editor.resize();
+    $("#language").html("{{ language }}");
     var local_storage_dict = {};
     local_storage_dict["copy"] = `{{ data }}`;
     local_storage_dict["version"] ={{ version }};
-
     localStorage.setItem(session_link, JSON.stringify(local_storage_dict));
 
 
 </script>
-<script src="{% static 'js/text_change_ajax.js' %}"></script>
+
 </body>
+
 </html>

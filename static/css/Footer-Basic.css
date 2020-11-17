@@ -1,0 +1,427 @@
+.footer-basic {
+  padding: 40px 0;
+  background-color: #ffffff;
+  color: #4b4c4d;
+}
+
+.footer-basic ul {
+  padding: 0;
+  list-style: none;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+.footer-basic li {
+  padding: 0 10px;
+}
+
+.footer-basic ul a {
+  color: inherit;
+  text-decoration: none;
+  opacity: 0.8;
+}
+
+.footer-basic ul a:hover {
+  opacity: 1;
+}
+
+.footer-basic .social {
+  text-align: center;
+  padding-bottom: 25px;
+}
+
+.footer-basic .social > a {
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  display: inline-block;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  margin: 0 8px;
+  color: inherit;
+  opacity: 0.75;
+}
+
+.footer-basic .social > a:hover {
+  opacity: 0.9;
+}
+
+.footer-basic .copyright {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 13px;
+  color: #aaa;
+  margin-bottom: 0;
+}
+
+@media (min-width: 300px) {
+  #codeSection {
+    display: block;
+  }
+}
+
+@media (min-width: 300px) {
+  #codeArea {
+    background-color: #323232;
+    height: 50vh;
+    width: 100%;
+  }
+}
+
+@media (min-width: 300px) {
+  #codeOutput {
+    height: 30vh;
+    width: 100%;
+    margin-bottom: 0.5em;
+  }
+}
+
+#codeMenu {
+  height: 50px;
+  width: 100%;
+  display: flex;
+}
+
+#codeMenu button{
+  border:none;
+}
+
+textarea {
+  resize: none;
+  width: 100%;
+  height: 100%;
+}
+
+@media (min-width: 300px) {
+  #divTextArea {
+    border: solid transparent;
+    border-width: 0.5em 0.5em 0 0.5em;
+    height: 100%;
+  }
+}
+
+@media (min-width: 992px) {
+  #codeArea {
+    height: 70vh;
+    width: 150vw;
+    /*margin: 0.5em;*/
+
+  }
+}
+
+@media (min-width: 992px) {
+  #codeSection {
+    display: flex;
+  }
+}
+
+@media (min-width: 992px) {
+  #codeOutput {
+    height: 70vh;
+    margin-top: 0.5em;
+  }
+}
+
+@media (min-width: 992px) {
+  #divTextArea {
+    height: calc(100% - 50px);
+  }
+}
+
+.image-holder {
+  width: 100%;
+}
+
+.register-photo .form-container {
+  display: table;
+  max-width: 900px;
+  width: 90%;
+  margin: 0 auto;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+}
+
+@media (min-width: 300px) {
+  .h1, h1 {
+    font-size: 8vw;
+    padding-top: 1vh;
+    padding-left: 0;
+    max-width: 150px;
+  }
+}
+
+@media (min-width: 576px) {
+  p {
+    font-size: 4vw;
+  }
+}
+
+@media (min-width: 576px) {
+  #registerForm {
+    width: 100vw;
+  }
+}
+
+@media (min-width: 768px) {
+  #mainDiv {
+    display: table;
+  }
+}
+
+@media (min-width: 576px) {
+  .h1, h1 {
+    font-size: 5vw;
+    padding-top: 1vh;
+    padding-left: 0;
+    max-width: 200px;
+  }
+}
+
+@media (min-width: 768px) {
+  p {
+    font-size: 2vw;
+  }
+}
+
+@media (min-width: 992px) {
+  #registerForm {
+    width: 40vw;
+  }
+}
+
+@media (min-width: 992px) {
+  p {
+    font-size: 2vw;
+  }
+}
+
+@media (min-width: 1200px) {
+  #mainDiv {
+    max-width: 1000px;
+  }
+}
+
+@media (min-width: 1200px) {
+  #registerForm {
+    width: 25vw;
+  }
+}
+
+@media (min-width: 768px) {
+  .h1, h1 {
+    font-size: 3.5vw;
+    padding-top: 1vh;
+    padding-left: 0vw;
+    max-width: 250px;
+  }
+}
+
+@media (min-width: 1200px) {
+  p {
+    font-size: 1.7vw;
+  }
+}
+
+.dropdown, .dropleft, .dropright, .dropup {
+}
+
+.dropdown, .dropleft, .dropright, .dropup {
+}
+
+.dropdown-menu.show {
+  width: inherit;
+  background-color: rgb(242,242,242);
+  height: inherit;
+  left: -95%;
+}
+
+#projectHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.table-dark td, .table-dark th, .table-dark thead th {
+}
+
+#projectItem {
+  display: flex;
+  justify-content: space-between;
+  max-height: 45px;
+}
+
+.table-dark td, .table-dark th, .table-dark thead th {
+  width: 100%;
+}
+
+@media (min-width: 300px) {
+  #projectDiv {
+    margin-right: 1%;
+    margin-left: 1%;
+    margin-top: 1em;
+  }
+}
+
+@media (min-width: 992px) {
+  .h1, h1 {
+    font-size: 2.5vw;
+    max-width: 250px;
+    padding-left: 0;
+  }
+}
+
+@media (min-width: 992px) {
+  #projectDiv {
+    margin-right: 25%;
+    margin-left: 25%;
+    margin-top: 3em;
+    min-height: 35vh;
+    margin-bottom: 3em;
+  }
+}
+
+@media (min-width: 1200px) {
+  .h1 h1 {
+    max-width: 400px;
+    font-size: 33vw;
+  }
+}
+
+@media (min-width: 1200px) {
+  h1 {
+    font-size: 3vw;
+    padding-left: 0;
+  }
+}
+
+@media (min-width: 1200px) {
+  #projectTable {
+    max-height: 50vh;
+  }
+}
+
+@media (min-width: 300px) {
+  .table-responsive.table-borderless {
+    max-height: 50vh;
+  }
+}
+
+@media (min-width: 300px) {
+  span {
+    font-size: 5vw;
+    max-width: 120px;
+  }
+}
+
+@media (min-width: 576px) {
+  span {
+    font-size: 3.5vw;
+    max-width: 500px;
+  }
+}
+
+@media (min-width: 768px) {
+  span {
+    font-size: 3vw;
+    max-width: 600px;
+  }
+}
+
+@media (min-width: 992px) {
+  span {
+    font-size: 2vw;
+    max-width: 400px;
+  }
+}
+
+@media (min-width: 1200px) {
+  span {
+    font-size: 1.5vw;
+    max-width: 500px;
+  }
+}
+
+@media (min-width: 300px) {
+  th {
+    font-size: 5.3vw;
+  }
+}
+
+@media (min-width: 576px) {
+  th {
+    font-size: 3.5vw;
+  }
+}
+
+@media (min-width: 768px) {
+  th {
+    font-size: 2.8vw;
+  }
+}
+
+@media (min-width: 992px) {
+  th {
+    font-size: 2vw;
+  }
+}
+
+@media (min-width: 1200px) {
+  th {
+    font-size: 1.5vw;
+  }
+}
+
+@media (min-width: 768px) {
+  #registerForm {
+    width: 30vw;
+  }
+}
+
+@media (min-width: 1500px) {
+  #registerForm {
+    width: 22vw;
+  }
+}
+
+span {
+  white-space: nowrap;
+  overflow: hidden;
+  /*TODO: remove comment*/
+  text-overflow: ellipsis;
+  display: block;
+  word-wrap: break-word;
+  max-height: 50px;
+}
+
+@media (min-width: 1200px) {
+  #collabCounter {
+    /*font-size: 1.5vw;*/
+  }
+}
+
+@media (min-width: 992px) {
+  #collabCounter {
+    /*font-size: 1.7vw;*/
+  }
+}
+
+@media (min-width: 768px) {
+  #collabCounter {
+    /*font-size: 2.3vw;*/
+  }
+}
+
+@media (min-width: 576px) {
+  #collabCounter {
+    /*font-size: 3.1vw;*/
+  }
+}
+
+@media (min-width: 300px) {
+  #collabCounter {
+    /*font-size: 5vw;*/
+  }
+}
+
