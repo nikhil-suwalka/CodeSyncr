@@ -71,18 +71,18 @@
                                         <span class="text-center">{{ link.1 }}</span>
                                     </div>
                                     <div style="display:flex">
-                                        <button class="btn btn-primary" type="button"
+                                        <button class="btn btn-primary utility" type="button"
                                                 style="margin: 0.2em;background-color: rgb(118,167,89);"
-                                                onclick="copy_clipboard('{{ link.0 }}')"><i
-                                                class="la la-clipboard"></i></button>
-                                        <button class="btn btn-primary" type="button"
+                                                onclick="copy_clipboard('{{ link.0 }}')">
+                                        <i class="la la-clipboard"><span class="tooltiptext">Copy Link</span></i></button>
+                                        <button class="btn btn-primary utility" type="button"
                                                 style="margin: 0.2em;background-color: rgb(225,96,96);"
                                                 onclick="delete_user('{{ link.0 }}')"><i
-                                                class="fa fa-trash"></i></button>
+                                                class="fa fa-trash"><span class="tooltiptext">Delete</span></i></button>
                                         <button
-                                                class="btn btn-primary" type="button"
+                                                class="btn btn-primary utility" type="button"
                                                 style="margin: 0.2em;background-color: rgb(235,59,96);display:flex"><i
-                                                class="fas fa-users" style="margin-top: 0.3em;margin-right: 0.2em;"></i><span
+                                                class="fas fa-users" style="margin-top: 0.3em;margin-right: 0.2em;"><span class="tooltiptext">Team</span></i><span
                                                 id="collabCounter"
                                                 style="font-size: 18px;">{{ link.2 }}</span>
                                         </button>
