@@ -119,10 +119,13 @@ def get_all_collaborators(session_id: str, current_user: str) -> list:
     collaborators = []
     users = Session.objects.filter(id=session_id).first().users.all()
     online_users = get_online_users()
+    online_count = 0
     for user in users:
         if user.first_name != current_user:
+            if user.id in online_users:
+                online_count += 1
             collaborators.append([user.first_name, user.id in online_users])
-    return [collaborators, len(get_online_users())]
+    return [collaborators, online_count+1]
 
 
 # Send changes to server
