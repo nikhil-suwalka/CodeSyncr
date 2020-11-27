@@ -28,7 +28,7 @@
             font-size: 16px !important;
             direction: ltr !important;
             text-align: left !important;
-            position: absolute;
+            {#position: absolute;#}
         }
 
 
@@ -43,8 +43,8 @@
              contenteditable="true"
              onblur="project_name_change()">{{ project_name }}</div>
     </a>
-        <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
-                class="navbar-toggler-icon"></span></button>
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="spn sr-only">Toggle navigation</span><span
+                class="spn navbar-toggler-icon"></span></button>
         <div
                 class="collapse navbar-collapse" id="navcol-1">
             <ul class="nav navbar-nav ml-auto">
@@ -55,9 +55,9 @@
     </div>
 </nav>
 <section id="codeSection">
-    <div id="codeArea" style="all: unset; height: 70vh;
+    <div id="codeArea" style="height: 70vh;
     width: 150vw;">
-        <div id="codearea" style="height: 100%; width: 100%;">{{ data }}</div>
+        <div id="codearea" style="height: 100%; width: 100%;position: relative">{{ data }}</div>
     </div>
     <div id="codeOutput">
         <div id="codeMenu">
@@ -85,7 +85,7 @@
                      role="menu">
                     <a class="dropdown-item" style="color: #19ee19" role="presentation" href="#">
                         <div style="display:flex"><i class="fa fa-user-circle-o"
-                                                     style="padding: 0;margin-right: 0.5em;width: 21px;font-size: 23px;padding-top: 4px;"></i><span
+                                                     style="padding: 0;margin-right: 0.5em;width: 21px;font-size: 23px;padding-top: 4px;"></i><span class="spn"
                                 style="font-size: 23px;">{{ current_user }}</span></div>
                     </a>
 
@@ -99,7 +99,7 @@
                             <a class="dropdown-item" role="presentation" href="#">
                         {% endif %}
                     <div style="display:flex"><i class="fa fa-user-circle-o"
-                                                 style="padding: 0;margin-right: 0.5em;width: 21px;font-size: 23px;padding-top: 4px;"></i><span
+                                                 style="padding: 0;margin-right: 0.5em;width: 21px;font-size: 23px;padding-top: 4px;"></i><span class="spn"
                             style="font-size: 23px;">{{ collab.0 }}</span></div>
                     </a>
 

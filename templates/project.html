@@ -28,8 +28,8 @@
     <div class="container"><a class="navbar-brand text-left" href="#">
         <div onclick="window.open('/', '_self')"> CodeSyncr</div>
     </a>
-        <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
-                class="navbar-toggler-icon"></span></button>
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="spn sr-only">Toggle navigation</span><span
+                class="spn navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse"
              id="navcol-1">
             <ul class="nav navbar-nav ml-auto">
@@ -68,21 +68,21 @@
                             <td>
                                 <div id="projectItem">
                                     <div style="cursor: pointer" onclick="window.location='/{{ link.0 }}'">
-                                        <span class="text-center">{{ link.1 }}</span>
+                                        <span class="spn text-center">{{ link.1 }}</span>
                                     </div>
                                     <div style="display:flex">
                                         <button class="btn btn-primary utility" type="button"
                                                 style="margin: 0.2em;background-color: rgb(118,167,89);"
                                                 onclick="copy_clipboard('{{ link.0 }}')">
-                                        <i class="la la-clipboard"><span class="tooltiptext">Copy Link</span></i></button>
+                                        <i class="la la-clipboard"><span class="spn tooltiptext">Copy Link</span></i></button>
                                         <button class="btn btn-primary utility" type="button"
                                                 style="margin: 0.2em;background-color: rgb(225,96,96);"
                                                 onclick="delete_user('{{ link.0 }}')"><i
-                                                class="fa fa-trash"><span class="tooltiptext">Delete</span></i></button>
+                                                class="fa fa-trash"><span class="spn tooltiptext">Delete</span></i></button>
                                         <button
                                                 class="btn btn-primary utility" type="button"
                                                 style="margin: 0.2em;background-color: rgb(235,59,96);display:flex"><i
-                                                class="fas fa-users" style="margin-top: 0.3em;margin-right: 0.2em;"><span class="tooltiptext">Team</span></i><span
+                                                class="fas fa-users" style="margin-top: 0.3em;margin-right: 0.2em;"><span class="spn tooltiptext">Team</span></i><span class="spn"
                                                 id="collabCounter"
                                                 style="font-size: 18px;">{{ link.2 }}</span>
                                         </button>
@@ -97,7 +97,7 @@
                     <tr>
                         <td>
                             <div id="projectItem">
-                                <span class="text-center" style="color: red">No projects found</span>
+                                <span class="spn text-center" style="color: red">No projects found</span>
 
                             </div>
                         </td>

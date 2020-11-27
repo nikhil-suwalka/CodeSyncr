@@ -309,35 +309,35 @@ textarea {
 }
 
 @media (min-width: 300px) {
-  span {
+  .spn {
     font-size: 5vw;
     max-width: 120px;
   }
 }
 
 @media (min-width: 576px) {
-  span {
+  .spn {
     font-size: 3.5vw;
     max-width: 500px;
   }
 }
 
 @media (min-width: 768px) {
-  span {
+  .spn {
     font-size: 3vw;
     max-width: 600px;
   }
 }
 
 @media (min-width: 992px) {
-  span {
+  .spn {
     font-size: 2vw;
     max-width: 400px;
   }
 }
 
 @media (min-width: 1200px) {
-  span {
+  .spn {
     font-size: 1.5vw;
     max-width: 500px;
   }
@@ -385,7 +385,7 @@ textarea {
   }
 }
 
-span {
+.spn {
   white-space: nowrap;
   overflow: hidden;
   /*TODO: remove comment*/
