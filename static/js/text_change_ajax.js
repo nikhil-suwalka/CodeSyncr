@@ -81,11 +81,14 @@ setInterval(function () {
             success:
                 function (data) {
                     if (data.change === "true" && !stop_receiving) {
+                        cursor = editor.selection.getCursor();
+
                         typer.setValue(data.latest_data, 1);
                         var local_storage_dict = {};
                         local_storage_dict["copy"] = data.latest_data;
                         local_storage_dict["version"] = data.version;
                         localStorage.setItem(session_link, JSON.stringify(local_storage_dict));
+                        typer.moveCursorTo(cursor.row, cursor.column);
 
                     }
                 }

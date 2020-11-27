@@ -104,12 +104,12 @@ def home_view(request, session_id):
             context["version"] = fileob.version
             context["language"] = fileob.language
             context["current_user"] = user_ob.first_name
-            collabs, num_of_collabs = get_all_collaborators(session_id, user_ob.first_name)
+            collabs, num_of_online = get_all_collaborators(session_id, user_ob.first_name)
             context["collabs"] = collabs
             context["project_name"] = session_ob.project_name
 
-            # +1 because the current user's name is sent separately
-            context["num_of_collabs"] = num_of_collabs
+            context["num_of_online"] = num_of_online
+            context["num_of_collabs"] = len(collabs)+1
             return render(request, "workarea.html", context)
         else:
             return redirect("/")
