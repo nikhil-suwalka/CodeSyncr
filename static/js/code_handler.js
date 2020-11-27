@@ -6,6 +6,12 @@ function language_changed(lang) {
 
     editor.session.setMode("ace/mode/" + lang);
 
+    if(lang === "python" )
+        $("#language").html("Python");
+    else if(lang === "c_cpp")
+        $("#language").html("C/C++");
+    else if(lang === "java")
+        $("#language").html("Java");
     $.ajax({
         type: "POST",
         url: "/change_language/" + session_link + "/",
