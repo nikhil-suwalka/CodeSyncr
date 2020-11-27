@@ -1,11 +1,14 @@
-
 link = window.location.href.split("/");
 session_link = link[link.length - 2]
+
 function language_changed(lang) {
-
-
     editor.session.setMode("ace/mode/" + lang);
-
+    if(lang === "python" )
+        $("#language").html("Python");
+    else if(lang === "c_cpp")
+        $("#language").html("C/C++");
+    else if(lang === "java")
+        $("#language").html("Java");
     $.ajax({
         type: "POST",
         url: "/change_language/" + session_link + "/",
@@ -20,9 +23,9 @@ function language_changed(lang) {
     });
 }
 
-function project_name_change(){
+function project_name_change() {
     var new_name = $("#project_name").text();
-    if(new_name.length === 0) {
+    if (new_name.length === 0) {
         $("#project_name").text("Untitled Project");
         new_name = "Untitled Project";
     }

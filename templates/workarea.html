@@ -141,7 +141,14 @@
     editor.setTheme("ace/theme/monokai");
     editor.session.setMode("ace/mode/{{ language }}");
     editor.resize();
-    $("#language").html("{{ language }}");
+    var lang = `{{ language }}`;
+    if(lang === "python" )
+        $("#language").html("Python");
+    else if(lang === "c_cpp")
+        $("#language").html("C/C++");
+    else if(lang === "java")
+        $("#language").html("Java");
+
     var local_storage_dict = {};
     local_storage_dict["copy"] = `{{ data }}`;
     local_storage_dict["version"] ={{ version }};

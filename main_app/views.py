@@ -227,11 +227,11 @@ def execute_code_fun(request):
         source = request.POST.get("source")
 
         output = ""
-        if lang == "python":
+        if lang == "Python":
             output = run_python(source)
-        elif lang == "c_cpp":
+        elif lang == "C/C++":
             output = run_cpp(source)
-        elif lang == "java":
+        elif lang == "Java":
             output = run_java(source)
 
         output = output.replace('\\n', "<br>")
