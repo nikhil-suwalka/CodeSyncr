@@ -73,7 +73,7 @@
                     <a class="dropdown-item" role="presentation" href="#" onclick="language_changed('java')">Java</a>
                 </div>
             </div>
-            <button class="btn btn-primary" type="button"
+            <button class="btn btn-primary" type="button" onclick="execute_code()"
                     style="margin: 0.5em;background-color: rgb(114,180,82);height: 38px;">Run
             </button>
             <div class="dropdown ">
@@ -109,7 +109,7 @@
                 </div>
             </div>
         </div>
-        <div id="divTextArea"><textarea id="codeoutput" readonly=""></textarea></div>
+        <div id="divTextArea"><div id="codeoutput" readonly="" style="height: 100%;width: 100%;background-color: white;padding: 1em;overflow: auto"></div></div>
     </div>
 </section>
 <div style="height: 50px;"></div>
